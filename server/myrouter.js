@@ -20,8 +20,12 @@ router.get('/test', function(req, res) {
 // Test mongo status
 router.get('/status', (req,res) => {
     mymongo.status(  (stat) => {
+      if(!stat) {
+        res.status(500).json({'error':1});
+        } else {
         res.json(stat);
-    }   );
+        }
+      }   );
 });
 
 

@@ -15,7 +15,7 @@ class MyMongo {
     this.url = 'mongodb://localhost:27017/sldb';
     }
 
-  status(cb) { // callBack will be called with (stats)
+  status(cb) { // callBack will be called with (stats) or null if error
     console.log("Checking MyMongo status");
     // Use connect method to connect to the Server
     this.mc
@@ -31,7 +31,11 @@ class MyMongo {
             })
           .catch((err) => {throw err;});
           })
-      .catch((err) => {cb(err)}); // Return error instead of message (TO BE IMPROVED !)
+      .catch((err) => {console.log(err);cb(null)}); // Return null if error
+  }
+
+  findAll(cb) { // callback will be called with (doc) or null if error
+
   }
 
 }
