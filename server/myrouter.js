@@ -28,6 +28,13 @@ router.get('/status', (req,res) => {
       }   );
 });
 
+// Get all records
+router.get('/poids',(req,res)=>{
+    mymongo.findAll(
+      (docs) => {res.json(docs)}
+    );
+});
+
 
 
 // more routes for our API will happen here
