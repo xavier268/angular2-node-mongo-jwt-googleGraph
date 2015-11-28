@@ -18,7 +18,7 @@ var optionverify = {
       'algorithm':"HS256",
       'issuer': "me"}
 
-      var access = { // base des mots des passe
+var access = { // base des mots des passe - format { user:password,...}
         "xavier" : "blandine",
         "xav":"dine"
       }
