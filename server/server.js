@@ -14,7 +14,7 @@ var myrouter = require("./myrouter").myrouter();
 app.use('/api', myrouter);
 
 // Provide webtoken generation facilities
-var aclrouter = require("./acl.js").aclrouter();
+var aclrouter = require("./acl").aclrouter();
 app.use('/jwt',aclrouter);
 
 // START THE SERVER

@@ -1,7 +1,7 @@
 "use strict";
 
 //==============================================================================
-//                            Access control logic
+//                       Access control logic
 //==============================================================================
 
 var aclrouter = require("express").Router();
@@ -18,15 +18,33 @@ var optionverify = {
       'algorithm':"HS256",
       'issuer': "me"}
 
+//==============================================================================
+//                Private, internal helper functions
+//==============================================================================
+
+//------------------------------------------------------------------------------
+// Check user credentials. Return payload ik ok, null if not.
+// Adjust as needed to control access ...
+function checkUser(user,password) {
+
+  // Ultra simple user/password verification - ovrerride as needed !
+  if(!user || !password) return null;
+
+  // return the payload will other credentials as needed ...
+  return {'user':user, 'role':'Tout'} ;
+}
+
 //------------------------------------------------------------------------------
 // Provides a webtoken as a string
 function getToken (user, password) {
 
-  // Ignore user/password verification
-  if(!user || !password) return null;
-
-  var r = jwt.sign({'user':user},privateKey,optionsign);
-  return r;
+  var pl = checkUser(user,password);
+  if(pl) {
+    var r = jwt.sign(pl,privateKey,optionsign);
+    return r;
+  }else {
+    return null;
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -43,14 +61,18 @@ function checkToken (t) {
 }
 
 //==============================================================================
-// Route management
+//                        Route management
+// Verification is using the header "Authorization: Bearer xxxxx.yyy.zzzz"
+// All routers access require a "Content-Type: application/json header".
 //==============================================================================
 
 // this will let us get the data from a POST
 aclrouter.use(bodyParser.urlencoded({ extended: true }));
 aclrouter.use(bodyParser.json());
 
-// Post a webToken request. Format is { user:lkjlkj, password:lkjlkjlkj }
+// POST a webToken request.
+// { user:lkjlkj, password:lkjlkjlkj } with Content-Type header: application/json
+// or user and password as x-www-form-urlencoded values in POST body
 // Returns text of the token.
 aclrouter.post('/',(req,res)=>{
     console.log("Request jwt body : ",req.body);
@@ -62,7 +84,7 @@ aclrouter.post('/',(req,res)=>{
 function auth(req,res,next) {
   console.log("Checking for authentication header");
   var t = req.get("Authorization");
-  t = t.replace("Bearer ","");
+  t = t.replace(/^[ ]*Bearer[ ]+/,"");
   console.log("Token : <"+t+">");
   req.payload = checkToken(t);
   if(!req.payload ) {
