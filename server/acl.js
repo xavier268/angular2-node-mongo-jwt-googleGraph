@@ -18,6 +18,11 @@ var optionverify = {
       'algorithm':"HS256",
       'issuer': "me"}
 
+      var access = { // base des mots des passe
+        "xavier" : "blandine",
+        "xav":"dine"
+      }
+
 //==============================================================================
 //                Private, internal helper functions
 //==============================================================================
@@ -29,6 +34,8 @@ function checkUser(user,password) {
 
   // Ultra simple user/password verification - ovrerride as needed !
   if(!user || !password) return null;
+
+  if(access[user]!=password) return null;
 
   // return the payload will other credentials as needed ...
   return {'user':user, 'role':'Tout'} ;
