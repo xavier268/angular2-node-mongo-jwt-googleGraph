@@ -12,6 +12,25 @@ class MyMongo {
     this.mc = require('mongodb').MongoClient;
     this.url = 'mongodb://localhost:27017/sldb';
     this.collection="poids";
+
+    console.log("Verification de la bonne indexation de la base");
+    this.mc
+      .connect(this.url)
+      .then(
+          (db)=> {
+             db.createIndex(this.collection,{"email":1,"quand":1},{"unique":true,"name":"UniqueEmailDateIndex"});
+             db.indexInformation(this.collection,{"full":true},(err,idx)=> {
+               if(err) throw err;
+               console.log("Existing index : ",idx);
+               db.close();
+             })
+
+          }
+      )
+      .catch((err)=>{console.log("Cannot connect to db !"); throw err;});
+
+
+
     }
 
   //----------------------------------------------------------------------------
