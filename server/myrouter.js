@@ -35,10 +35,19 @@ router.get('/poids',(req,res)=>{
     );
 });
 
+// Post a record to update
+router.post('/poids',(req,res)=>{
+      mymongo.update(
+        req.body,
+        (r)=>{res.json(r)}
+      );
+});
 
-
-// more routes for our API will happen here
-// .....
+// Delete all collection
+router.delete('/poids',(req,res)=>{
+    mymongo.zapCol();
+    res.json({"ok":1,"message":"Database was deleted !"});
+});
 
 
 //==============================================================================
