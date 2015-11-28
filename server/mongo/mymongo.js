@@ -59,13 +59,14 @@ class MyMongo {
   update(doc, cb) { // Update or create the doc in the collection,
                     // and call the callBack with the result
       console.log("Updating : ", doc);
-      if(!doc || !doc.email || !doc.quand || !doc.kg) {
+      if(!doc || !doc.email || !doc.kg) {
         console.log("Cannot update empty doc :", doc);
         cb({"error":1, "doc":doc});
         return;
       }
       // On normalize la date, pour eviter de créer un record avec une string !
-      doc.quand = new Date(doc.quand);
+      doc.quand = this.normalizeDate(doc.quand);
+
       this.mc
       .connect(this.url)
       .then((db)=> {
@@ -89,6 +90,14 @@ class MyMongo {
     .then((db)=>{db.dropCollection(this.collection)});
   }
 
+  //============================================================================
+  normalizeDate(date) {   // date can be a string, null or a Date object
+    var r;
+    if(!date) { r = new Date()} else {r=new Date(date)};
+    r.setUTCHours(0,0,0,0);
+    console.log("Date was normalized to :", r);
+    return r;
+  }
 }
 
 // Static singleton instance

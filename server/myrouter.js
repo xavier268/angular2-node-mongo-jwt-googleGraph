@@ -8,9 +8,14 @@
 
 var express = require('express');
 var mymongo = require('./mongo/mymongo').mymongo();
+var bodyParser = require("body-parser");
 
  // get an instance of the express Router
  var router = express.Router();
+
+ // this will let us get the data from a POST
+ router.use(bodyParser.urlencoded({ extended: true }));
+ router.use(bodyParser.json());
 
 // test route to make sure everything is working
 router.get('/test', function(req, res) {
