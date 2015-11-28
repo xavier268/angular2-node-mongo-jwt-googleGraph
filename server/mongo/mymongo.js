@@ -12,8 +12,10 @@ class MyMongo {
     this.mc = require('mongodb').MongoClient;
     this.url = 'mongodb://localhost:27017/sldb';
     this.collection="poids";
+    console.log("Database url : ", this.url);
+    console.log("Database Collection : ",this.collection);
 
-    console.log("Verification de la bonne indexation de la base");
+    console.log("Verification/indexation de la base");
     this.mc
       .connect(this.url)
       .then(
