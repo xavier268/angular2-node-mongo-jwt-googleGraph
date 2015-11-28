@@ -14,7 +14,7 @@ class MyMongo {
     this.collection="poids";
     }
 
-  //============================================================================
+  //----------------------------------------------------------------------------
   status(cb) { // callBack will be called with (stats) or null if error
     console.log("Checking MyMongo status");
     // Use connect method to connect to the Server
@@ -34,7 +34,7 @@ class MyMongo {
       .catch((err) => {console.log(err);cb(null)}); // Return null if error
   }
 
-  //============================================================================
+  //----------------------------------------------------------------------------
   findAll(cb) { // callback will be called with  an array of docs or [] if error
     console.log("Retrieving all records");
     this.mc
@@ -55,7 +55,7 @@ class MyMongo {
       )
       .catch((err) => {console.log(err);cb([])}); // Return null if error
   }
-  //============================================================================
+  //----------------------------------------------------------------------------
   update(doc, cb) { // Update or create the doc in the collection,
                     // and call the callBack with the result
       console.log("Updating : ", doc);
@@ -65,7 +65,7 @@ class MyMongo {
         return;
       }
       // On normalize la date, pour eviter de créer un record avec une string !
-      doc.quand = this.normalizeDate(doc.quand);
+      doc.quand = normalizeDate(doc.quand);
 
       this.mc
       .connect(this.url)
@@ -82,7 +82,7 @@ class MyMongo {
 
   }
 
-  //============================================================================
+  //----------------------------------------------------------------------------
   zapCol() {   // Delete the collection
     console.log("Zapping the database ...");
     this.mc
@@ -90,15 +90,19 @@ class MyMongo {
     .then((db)=>{db.dropCollection(this.collection)});
   }
 
-  //============================================================================
-  normalizeDate(date) {   // date can be a string, null or a Date object
-    var r;
-    if(!date) { r = new Date()} else {r=new Date(date)};
-    r.setUTCHours(0,0,0,0);
-    console.log("Date was normalized to :", r);
-    return r;
-  }
 }
+
+//============================================================================
+//  Helper functions
+//============================================================================
+function normalizeDate(date) {   // date can be a string, null or a Date object
+  var r;
+  if(!date) { r = new Date()} else {r=new Date(date)};
+  r.setUTCHours(0,0,0,0);
+  console.log("Date was normalized to :", r);
+  return r;
+}
+
 
 // Static singleton instance
 MyMongo.instance = new MyMongo;
