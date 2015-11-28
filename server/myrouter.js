@@ -9,9 +9,13 @@
 var express = require('express');
 var mymongo = require('./mongo/mymongo').mymongo();
 var bodyParser = require("body-parser");
+var acl = require("./acl");
 
  // get an instance of the express Router
  var router = express.Router();
+
+ // Activate middleware for access control - authenticate all api calls to this router
+ router.use(acl.auth);
 
  // this will let us get the data from a POST
  router.use(bodyParser.urlencoded({ extended: true }));
@@ -40,7 +44,7 @@ router.get('/poids',(req,res)=>{
     );
 });
 
-// Post a record to update
+// Post a record to upsert
 router.post('/poids',(req,res)=>{
       mymongo.update(
         req.body,

@@ -6,18 +6,16 @@
 // call the packages we need
 var express    = require('express');        // call express
 var app        = express();                 // define our app using express
-var bodyParser = require('body-parser');
-
-// configure app to use bodyParser()
-// this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
 // REGISTER OUR ROUTES -------------------------------
+
 // Retrieve a configured router object
-var router = require("./myrouter").myrouter();
-// ... ad use it to configure the app
-app.use('/api', router);
+var myrouter = require("./myrouter").myrouter();
+app.use('/api', myrouter);
+
+// Provide webtoken generation facilities
+var aclrouter = require("./acl.js").aclrouter();
+app.use('/jwt',aclrouter);
 
 // START THE SERVER
 // =============================================================================
