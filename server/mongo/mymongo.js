@@ -36,7 +36,7 @@ class MyMongo {
               )
           }
       )
-      .catch((err)=>{console.log("Cannot connect to db !"); throw err;});
+      .catch((err)=>{console.log("Cannot connect to mongodb !"); throw err;});
     }
 
   //----------------------------------------------------------------------------
