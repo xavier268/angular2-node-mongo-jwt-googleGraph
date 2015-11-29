@@ -91,6 +91,10 @@ aclrouter.post('/',(req,res)=>{
 function auth(req,res,next) {
   console.log("Checking for authentication header");
   var t = req.get("Authorization");
+  if(!t){
+    res.status(401).send("Not authorized !");
+    return;
+  };
   t = t.replace(/^[ ]*Bearer[ ]+/,"");
   console.log("Token : <"+t+">");
   req.payload = checkToken(t);
