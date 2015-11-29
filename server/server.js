@@ -25,4 +25,5 @@ app.use("/lib",express.static("bower_components"));
 // =============================================================================
 var port = process.env.PORT || 8080;       // set our port
 app.listen(port);
+console.log(new Date());
 console.log('Waiting for connection on port ' + port);

@@ -8,7 +8,7 @@
 class MyMongo {
 
   constructor() {
-    console.log("Constructing MyMongo layer");
+    console.log("Constructing MyMongo");
     this.mc = require('mongodb').MongoClient;
     this.url = 'mongodb://localhost:27017/sldb';
     this.collection="poids";
@@ -20,19 +20,23 @@ class MyMongo {
       .connect(this.url)
       .then(
           (db)=> {
-             db.createIndex(this.collection,{"email":1,"quand":1},{"unique":true,"name":"UniqueEmailDateIndex"});
-             db.indexInformation(this.collection,{"full":true},(err,idx)=> {
-               if(err) throw err;
-               console.log("Existing index : ",idx);
-               db.close();
-             })
-
+             db.createIndex(
+               this.collection,
+               {"email":1,"quand":1},
+               {"unique":true,"name":"UniqueEmailDateIndex"}
+             );
+             db.indexInformation(
+               this.collection,
+               {"full":true},
+               (err,idx)=> {
+                  if(err) throw err;
+                  console.log("Existing index : \n",idx);
+                  db.close();
+                }
+              )
           }
       )
       .catch((err)=>{console.log("Cannot connect to db !"); throw err;});
-
-
-
     }
 
   //----------------------------------------------------------------------------
@@ -116,6 +120,7 @@ class MyMongo {
 //============================================================================
 //  Helper functions
 //============================================================================
+
 function normalizeDate(date) {   // date can be a string, null or a Date object
   var r;
   if(!date) { r = new Date()} else {r=new Date(date)};
@@ -124,8 +129,10 @@ function normalizeDate(date) {   // date can be a string, null or a Date object
   return r;
 }
 
-
-// Static singleton instance
+//==============================================================================
+// Instanciate a single, static, singleton instance
+//==============================================================================
+console.log("Creating the singleton MyMongo instance");
 MyMongo.instance = new MyMongo;
 
 //==============================================================================
@@ -133,6 +140,6 @@ MyMongo.instance = new MyMongo;
 //==============================================================================
 
 exports.mymongo = function() {
-  console.log("Exporting the MyMongo singleton instance");
+  console.log("Accessing the MyMongo singleton instance");
   return MyMongo.instance;
 }
