@@ -7,21 +7,8 @@
 var aclrouter = require("express").Router();
 var jwt = require("jsonwebtoken");
 var bodyParser = require("body-parser");
+var conf = require("./acl.conf");
 
-
-var privateKey = "999";
-var optionsign = {
-      'algorithm':"HS256",
-      'expiresIn': 60*3,  // 3 mns
-      'issuer': "me"}
-var optionverify = {
-      'algorithm':"HS256",
-      'issuer': "me"}
-
-var access = { // base des mots des passe - format { user:password,...}
-        "xavier" : "blandine",
-        "xav":"dine"
-      }
 
 //==============================================================================
 //                Private, internal helper functions
@@ -35,7 +22,7 @@ function checkUser(user,password) {
   // Ultra simple user/password verification - ovrerride as needed !
   if(!user || !password) return null;
 
-  if(access[user]!=password) return null;
+  if(conf.access[user]!=password) return null;
 
   // return the payload will other credentials as needed ...
   return {'user':user, 'role':'Tout'} ;
@@ -47,7 +34,7 @@ function getToken (user, password) {
 
   var pl = checkUser(user,password);
   if(pl) {
-    var r = jwt.sign(pl,privateKey,optionsign);
+    var r = jwt.sign(pl,conf.privateKey,conf.optionsign);
     return r;
   }else {
     return null;
@@ -59,7 +46,7 @@ function getToken (user, password) {
 function checkToken (t) {
   if(!t) return null;
   try {
-    var decoded = jwt.verify(t,privateKey,optionverify);
+    var decoded = jwt.verify(t,conf.privateKey,conf.optionverify);
     return decoded;
   } catch(err) {
     console.log("Token("+t+") was not recognized : ",err);

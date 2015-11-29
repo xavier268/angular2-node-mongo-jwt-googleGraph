@@ -10,8 +10,8 @@ class MyMongo {
   constructor() {
     console.log("Constructing MyMongo");
     this.mc = require('mongodb').MongoClient;
-    this.url = 'mongodb://localhost:27017/sldb';
-    this.collection="poids";
+    this.url = require("./mymongo.conf").url;
+    this.collection=require("./mymongo.conf").collection;
     console.log("Database url : ", this.url);
     console.log("Database Collection : ",this.collection);
 
