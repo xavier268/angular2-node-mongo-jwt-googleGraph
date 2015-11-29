@@ -17,6 +17,10 @@ app.use('/api', myrouter);
 var aclrouter = require("./acl").aclrouter();
 app.use('/jwt',aclrouter);
 
+// Register static route for client files
+app.use(express.static("client"));
+app.use("/lib",express.static("bower_components"));
+
 // START THE SERVER
 // =============================================================================
 var port = process.env.PORT || 8080;       // set our port
