@@ -1,8 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
+    <title>Main App - Test Framework</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Angular2 and transpilers -->
+    <script src="/lib/system.js/dist/system.js"></script>
+    <script src="/lib/typescript/index.js"></script>
+    <script src="/lib/angular2/index.js"></script>
+    <script src="/lib/angular2h/index.js"></script>
+
+    <!-- Bootstrap & co. -->
+    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"></link>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- We are now preparing the browser to be able
+     to process PURE typescript files -->
+     <script>
+      System.config({
+        transpiler: 'typescript',
+        typescriptOptions: { emitDecoratorMetadata: true }
+      });
+      System.import('./components/app.ts');
+      </script>
+
 </head>
-<body>
-<h1>Hello World !</h1>
-</body>
+  <body>
+    <div class="container">
+      <app>loading... </app>
+    </div>
+  </body>
 </html>
