@@ -27,13 +27,16 @@ describe("mymongo.js testing suite", function() {
           //console.log("Status returned to test call : ",s);
           expect(s.ok).toBe(1);
           });
-
   });
 
 
   //===========================================
-  xit("Insert an object",()=>{
-    mm.update(o1);
+  it("Get indexes",()=>{
+    mm.getIndexes((idx)=>{
+      expect(idx).toBeTruthy();
+      //console.log("Indexes : ",idx);
+      expect(idx.length).toBe(2);
+      });
   });
 
 

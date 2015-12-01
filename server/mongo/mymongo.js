@@ -22,43 +22,48 @@ class MyMongo {
                {"email":1,"quand":1},
                {"unique":true,"name":"UniqueEmailDateIndex"}
              );
-             db.indexInformation(
-               this.collection,
-               {"full":true},
-               (err,idx)=> {
-                  if(err) throw err;
-                  console.log("Existing index : \n",idx);
-                  db.close();
-                }
-              )
-          }
-      );
+              }
+          )
     }
 
   //----------------------------------------------------------------------------
   // Execution d'un call back sur la database db.
   //        Le callBack prend un objet db en parametre,
-  //        et doit se terminer par l'appel de db.close().
+  //        Si keepOpen (default = false) est truthy, on ne ferme pas la DB.
+  //        C'est necessaire si on fait des actions asynchrones ensuite.
+  //        Si keepOpen est undefined ou falsy, la db est fermée juste après le callBack
   //----------------------------------------------------------------------------
-  command(dbCommandFunction)  {
+  command(dbCommandFunction, keepOpen)  {
       console.log("Connecting to "+ this.url);
       this.mc.connect(this.url)
-        .then(dbCommandFunction)
+        .then((db)=>{dbCommandFunction(db);if(keepOpen){return;} console.log("Closing db");db.close();})
         .catch((err)=>{console.log("Cannot connect to ",this.url, "\n",err); throw err;});
   }
 
   //----------------------------------------------------------------------------
   status(cb) { // callBack will be called with (stats) or null if error
-    console.log("Checking MyMongo status");
-    // Use connect method to connect to the Server
     this.command((db) => {
-        db.stats()
-          .then((stats)=>{
-            cb(stats);
-            db.close(); // Closing only if we are sure everything is finished ...
+        db.stats((err,st)=>{
+              if(err) {console.log("error status call",err);throw err; };
+              cb(st);
+              db.close();
+              console.log("Late closing db");              
+              });
+      },true); // KeepOpen
+  }
+
+
+  //----------------------------------------------------------------------------
+  getIndexes(cb) { //callback will be called with index array
+    this.command((db) => {
+        db.indexInformation(this.collection,{"full":true})
+          .then((idx)=>{
+            cb(idx);
+            db.close();
+            console.log("Late closing db");
             })
-          .catch((err) => {console.log("error in status call",err);throw err;});
-        });
+          .catch((err) => {console.log("error in getIndexes call",err);throw err;});
+        },true);// keepOpen
   }
 
   //----------------------------------------------------------------------------
