@@ -4,7 +4,6 @@
 //                Mongodb access layer
 //==============================================================================
 
-
 class MyMongo {
 
   constructor() {
@@ -16,9 +15,7 @@ class MyMongo {
     console.log("Database Collection : ",this.collection);
 
     console.log("Verification/indexation de la base");
-    this.mc
-      .connect(this.url)
-      .then(
+    this.command(
           (db)=> {
              db.createIndex(
                this.collection,
@@ -35,17 +32,26 @@ class MyMongo {
                 }
               )
           }
-      )
-      .catch((err)=>{console.log("Cannot connect to mongodb !"); throw err;});
+      );
     }
+
+  //----------------------------------------------------------------------------
+  // Execution d'un call back sur la database db.
+  //        Le callBack prend un objet db en parametre,
+  //        et doit se terminer par l'appel de db.close().
+  //----------------------------------------------------------------------------
+  command(dbCommandFunction)  {
+      console.log("Connecting to "+ this.url);
+      this.mc.connect(this.url)
+        .then(dbCommandFunction)
+        .catch((err)=>{console.log("Cannot connect to ",this.url); throw err;});
+  }
 
   //----------------------------------------------------------------------------
   status(cb) { // callBack will be called with (stats) or null if error
     console.log("Checking MyMongo status");
     // Use connect method to connect to the Server
-    this.mc
-      .connect(this.url)
-      .then( (db) => {
+    this.command((db) => {
         console.log("Connected correctly to server");
         db.stats()
           .then((stats)=>{
@@ -55,17 +61,13 @@ class MyMongo {
             console.log("Connection was closed");
             })
           .catch((err) => {throw err;});
-          })
-      .catch((err) => {console.log(err);cb(null)}); // Return null if error
+        });
   }
 
   //----------------------------------------------------------------------------
   findAll(cb) { // callback will be called with  an array of docs or [] if error
     console.log("Retrieving all records");
-    this.mc
-      .connect(this.url)
-      .then(
-        (db) => {
+    this.command( (db) => {
             console.log("Correctly connected to server");
             var col = db.collection(this.collection);
             col.find({},{_id:0}).toArray(
@@ -76,9 +78,7 @@ class MyMongo {
                       cb([]);
                     };
                   })
-          }
-      )
-      .catch((err) => {console.log(err);cb([])}); // Return null if error
+          });
   }
   //----------------------------------------------------------------------------
   update(doc, cb) { // Update or create the doc in the collection,
@@ -92,9 +92,7 @@ class MyMongo {
       // On normalize la date, pour eviter de créer un record avec une string !
       doc.quand = normalizeDate(doc.quand);
 
-      this.mc
-      .connect(this.url)
-      .then((db)=> {
+      this.command((db)=> {
           console.log("Correctly connected to server");
           var col = db.collection(this.collection);
           col.updateOne(
@@ -102,19 +100,15 @@ class MyMongo {
                 {'upsert':true})
           .then((r)=>{console.log("Update result : ",r);cb(r);})
           .catch((err) => {throw err});
-      })
-      .catch((err)=>{console.log("Erreur : ", err);cb(err)});
+      });
 
   }
 
   //----------------------------------------------------------------------------
   zapCol() {   // Delete the collection
     console.log("Zapping the database ...");
-    this.mc
-    .connect(this.url)
-    .then((db)=>{db.dropCollection(this.collection)});
+    this.command((db)=>{db.dropCollection(this.collection)});
   }
-
 }
 
 //============================================================================
