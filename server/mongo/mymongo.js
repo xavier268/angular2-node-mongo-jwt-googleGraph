@@ -44,7 +44,7 @@ class MyMongo {
       console.log("Connecting to "+ this.url);
       this.mc.connect(this.url)
         .then(dbCommandFunction)
-        .catch((err)=>{console.log("Cannot connect to ",this.url); throw err;});
+        .catch((err)=>{console.log("Cannot connect to ",this.url, "\n",err); throw err;});
   }
 
   //----------------------------------------------------------------------------
@@ -52,15 +52,12 @@ class MyMongo {
     console.log("Checking MyMongo status");
     // Use connect method to connect to the Server
     this.command((db) => {
-        console.log("Connected correctly to server");
         db.stats()
           .then((stats)=>{
-            console.log(stats);
             cb(stats);
             db.close(); // Closing only if we are sure everything is finished ...
-            console.log("Connection was closed");
             })
-          .catch((err) => {throw err;});
+          .catch((err) => {console.log("error in status call",err);throw err;});
         });
   }
 

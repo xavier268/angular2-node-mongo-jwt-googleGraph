@@ -2,38 +2,32 @@
 //==============================================================================
 //                    Basic jasmine test
 //==============================================================================
-
+var expect = require("expect");
 
 
 describe("mymongo.js testing suite", function() {
 
-  var mm;
+  var mm = require("../server/mongo/mymongo").mymongo();
   var o1 = {"quand":"2015-11-04","kg":85.2,"email":"testmail"};
   var o2 = {"quand":"2015-11-04","kg":90,"email":"testmail"};
   var o3 = {"quand":"2015-11-05","kg":85.2,"email":"testmail"};
 
 
-  beforeAll(function(){
-      mm = require("../server/mongo/mymongo").mymongo();
-      expect(mm).toBeDefined();
-      expect(mm).toBeTruthy();
-      /*var end = (new Date()).getTime() + 5000; // wait 1 sec
-      while((new Date()).getTime() < end) {
-        1+2;
-      }*/
-  });
-
   //==========================================
   it("Basic connection command",()=>{
       mm.command((db)=>{
-        expect(db).toBeDefined();
+        expect(db).toBeTruthy();
         db.close();})
   });
 
   //===========================================
-  xit("Print status",()=>{
-      mm.status((s)=>{console.log("Status : ",s);});
-      expect(1).toBe(1);
+  it("Print status",()=>{
+      mm.status((s)=>{
+          expect(s).toBeTruthy();
+          //console.log("Status returned to test call : ",s);
+          expect(s.ok).toBe(1);
+          });
+
   });
 
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "---------------Versions--------------------"
 echo "Bower version : $(bower --version)"
-echo "jasmine version : $(jasmine -v)"
+echo "mocha version : $(mocha --version)"
 echo "npm version : $(npm --version)"
 echo "node version : $(node --version)"
 echo "---------------Install---------------------"
