@@ -14,14 +14,14 @@ describe("mymongo.js testing suite", function() {
 
 
   //==========================================
-  it("Basic connection command",()=>{
+  xit("Basic connection command",()=>{
       mm.command((db)=>{
         expect(db).toBeTruthy();
         db.close();})
   });
 
   //===========================================
-  it("Print status",()=>{
+  xit("Print status",()=>{
       mm.status((s)=>{
           expect(s).toBeTruthy();
           //console.log("Status returned to test call : ",s);
@@ -31,11 +31,33 @@ describe("mymongo.js testing suite", function() {
 
 
   //===========================================
-  it("Get indexes",()=>{
+  xit("Get indexes",()=>{
     mm.getIndexes((idx)=>{
       expect(idx).toBeTruthy();
       //console.log("Indexes : ",idx);
       expect(idx.length).toBe(2);
+      });
+  });
+
+  //===========================================
+  it("update data",function(){  // Nesteing is required to garantee execution order ...
+    mm.update(o1,(r)=>{
+      //console.log("Update result : ",r);
+      expect(r.result.ok).toBe(1);
+
+      mm.update(o2,(r)=>{
+          //console.log("Update result : ",r);
+          expect(r.result.ok).toBe(1);
+          expect(r.result.nModified).toBe(1);
+          expect(r.result.n).toBe(1);
+
+          mm.update(o2,(r)=>{
+              //console.log("Update result : ",r);
+              expect(r.result.ok).toBe(1);
+              expect(r.result.nModified).toBe(0);
+              expect(r.result.n).toBe(1);
+              });
+          });
       });
   });
 
