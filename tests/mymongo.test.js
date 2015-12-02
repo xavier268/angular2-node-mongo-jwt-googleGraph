@@ -21,104 +21,78 @@ describe("mymongo.js testing suite", function() {
 
   });
 
-  //==========================================
-  it("Basic connection command",()=>{
-      mm.command((db)=>{
-        expect(db).toBeTruthy();
-        db.close();})
+  //==============================================
+  it("Get all test records (empty or one)",function(done){
+    mm.findAll((r)=>{
+      expect(r.length).toBeLessThan(2);
+      //console.log("Test result1 :\n",r);
+      done();
+    });
   });
 
+  //==========================================
+  it("Basic connection command",(done)=>{
+      mm.command((db)=>{
+        expect(db).toBeTruthy();
+        db.close();
+        done();
+        },true);//keepOpen
+});
+
   //===========================================
-  it("Print status",()=>{
+  it("Print status",(done)=>{
       mm.status((s)=>{
           expect(s).toBeTruthy();
           //console.log("Status returned to test call : ",s);
           expect(s.ok).toBe(1);
+          done();
           });
   });
 
 
-  //===========================================
-  it("Get indexes",()=>{
-    mm.getIndexes((idx)=>{
-      expect(idx).toBeTruthy();
-      //console.log("Indexes : ",idx);
-      expect(idx.length).toBe(2);
-      });
-  });
-
-  //===========================================
-  describe("Zap & Update data",function(){
-
-    it("Zap",function(){mm.zapCol();});
+    //===========================================
+    it("Get indexes",(done)=>{
+      mm.getIndexes((idx)=>{
+        expect(idx).toBeTruthy();
+        //console.log("Indexes : ",idx);
+        expect(idx.length).toBe(2);
+        done();
+        });
+    });
 
 
-    it("Update",function(){ // Nesting is required to garantee execution order ...
-    mm.update(o1,(r)=>{
-      //console.log("Update result : ",r);
-      expect(r.result.ok).toBe(1);
 
-      mm.update(o2,(r)=>{
+    //===========================================
+    // Zapping at the end, so that indexes have bee, correctly tested above ..
+
+      it("Zap then update then zap",function(done){
+        mm.zapCol();
+        mm.update(o1,(r)=>{
           //console.log("Update result : ",r);
           expect(r.result.ok).toBe(1);
-          expect(r.result.nModified).toBe(1);
-          expect(r.result.n).toBe(1);
 
           mm.update(o2,(r)=>{
               //console.log("Update result : ",r);
               expect(r.result.ok).toBe(1);
-              expect(r.result.nModified).toBe(0);
+              expect(r.result.nModified).toBe(1);
               expect(r.result.n).toBe(1);
+
+              mm.update(o2,(r)=>{
+                  //console.log("Update result : ",r);
+                  expect(r.result.ok).toBe(1);
+                  expect(r.result.nModified).toBe(0);
+                  expect(r.result.n).toBe(1);
+
+                  // Zapping
+                  mm.zapCol();
+                  done();
+                  });
               });
-          });
       });
-    });
 
-
-  });
-  //===========================================
-  xdescribe("Update & Zap data - NOT WORKING - SYNCHRO CONFLICT ?!",function(){
-
-    it("Update",function(){ // Nesting is required to garantee execution order ...
-    mm.update(o1,(r)=>{
-      //console.log("Update result : ",r);
-      expect(r.result.ok).toBe(1);
-
-      mm.update(o2,(r)=>{
-          //console.log("Update result : ",r);
-          expect(r.result.ok).toBe(1);
-          expect(r.result.nModified).toBe(1);
-          expect(r.result.n).toBe(1);
-
-          mm.update(o2,(r)=>{
-              //console.log("Update result : ",r);
-              expect(r.result.ok).toBe(1);
-              expect(r.result.nModified).toBe(0);
-              expect(r.result.n).toBe(1);
-              });
-          });
       });
-    });
 
-    it("Zap",function(){mm.zapCol();});
 
-  });
-
-  //==============================================
-  it("Get all records",function(){
-    mm.findAll((r)=>{
-      //console.log("Test result : \n",r);
-      expect(r.length).toBe(1);
-      expect(r[0].email).toBeTruthy();
-      expect(r[0].kg).toBeTruthy();
-      expect(r[0].quand).toBeTruthy();
-    });
-  });
-
-  //============================================
-  it("Zap database",function(){
-
-    });
 
 
 });

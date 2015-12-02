@@ -45,7 +45,7 @@ class MyMongo {
   status(cb) { // callBack will be called with (stats) or null if error
     this.command((db) => {
         db.stats((err,st)=>{
-              if(err) {console.log("error status call",err);throw err; };
+              if(err) {console.log("error status call",err);};
               cb(st);
               db.close();
               });
@@ -61,7 +61,7 @@ class MyMongo {
             cb(idx);
             db.close();
             })
-          .catch((err) => {console.log("error in getIndexes call",err);throw err;});
+          .catch((err) => {console.log("error in getIndexes call",err);db.close();});
         },true);// keepOpen
   }
 
@@ -72,11 +72,12 @@ class MyMongo {
             var col = db.collection(this.collection);
             col.find({},{_id:0}).toArray(
               (err,docs)=>{
-                  if(docs) {
+                  if(!err) {
                       cb(docs);
                       db.close();
                       } else {
                       console.log("Error in findAll : ",err);
+                      db.close();
                       cb([]);
                     };
                   })
@@ -100,7 +101,7 @@ class MyMongo {
                 {'email':doc.email, 'quand':doc.quand}, {$set:{'kg':doc.kg}},
                 {'upsert':true})
           .then((r)=>{cb(r);db.close()})
-          .catch((err) => {throw err});
+          .catch((err) => {console.log("Error in update",err);db.close();});
       },true);//keepOpen
   }
 
@@ -110,7 +111,7 @@ class MyMongo {
     this.command((db)=>{
       db.dropCollection(this.collection)
           .then((r)=>{db.close();})
-          .catch((e)=>{console.log("Error zapping collection : ",e)})}
+          .catch((e)=>{console.log("Error zapping collection : ",e);db.close();})}
           ,true // keepOpen
         );
   }
