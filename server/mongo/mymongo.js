@@ -21,9 +21,11 @@ class MyMongo {
                this.collection,
                {"email":1,"quand":1},
                {"unique":true,"name":"UniqueEmailDateIndex"}
-             );
+             )
+             .then((r)=>{console.log("Index creation : ",r);db.close();})
+             .catch((e)=>{console.log("Error creating default indexes : ",err);db.close();throw err});
               }
-          )
+          ,true)// keepOpen
     }
 
   //----------------------------------------------------------------------------
@@ -34,10 +36,9 @@ class MyMongo {
   //        Si keepOpen est undefined ou falsy, la db est fermée juste après le callBack
   //----------------------------------------------------------------------------
   command(dbCommandFunction, keepOpen)  {
-      console.log("--->Connecting to "+ this.url);
       this.mc.connect(this.url)
-        .then((db)=>{dbCommandFunction(db);if(keepOpen){return;} console.log("Closing db");db.close();})
-        .catch((err)=>{console.log("Cannot connect to ",this.url, "\n",err); throw err;});
+        .then((db)=>{dbCommandFunction(db);if(keepOpen){return;} db.close();})
+        .catch((err)=>{console.log("Command cannot connect to ",this.url, "\n",err); throw err;});
   }
 
   //----------------------------------------------------------------------------
@@ -47,7 +48,6 @@ class MyMongo {
               if(err) {console.log("error status call",err);throw err; };
               cb(st);
               db.close();
-              console.log("Late closing db");
               });
       },true); // KeepOpen
   }
@@ -60,7 +60,6 @@ class MyMongo {
           .then((idx)=>{
             cb(idx);
             db.close();
-            console.log("Late closing db");
             })
           .catch((err) => {console.log("error in getIndexes call",err);throw err;});
         },true);// keepOpen
@@ -68,24 +67,25 @@ class MyMongo {
 
   //----------------------------------------------------------------------------
   findAll(cb) { // callback will be called with  an array of docs or [] if error
-    console.log("Retrieving all records");
+    //console.log("Retrieving all records");
     this.command( (db) => {
-            console.log("Correctly connected to server");
             var col = db.collection(this.collection);
             col.find({},{_id:0}).toArray(
               (err,docs)=>{
                   if(docs) {
                       cb(docs);
+                      db.close();
                       } else {
+                      console.log("Error in findAll : ",err);
                       cb([]);
                     };
                   })
-          });
+          },true);  //keepOpen
   }
   //----------------------------------------------------------------------------
   update(doc, cb) { // Update or create the doc in the collection,
                     // and call the callBack with the result
-      console.log("Updating : ", doc);
+      //console.log("Updating : ", doc);
       if(!doc || !doc.email || !doc.kg) {
         console.log("Cannot update empty doc :", doc);
         cb({"error":1, "doc":doc});
@@ -99,16 +99,20 @@ class MyMongo {
           col.updateOne(
                 {'email':doc.email, 'quand':doc.quand}, {$set:{'kg':doc.kg}},
                 {'upsert':true})
-          .then((r)=>{cb(r);console.log("Late closing");db.close()})
+          .then((r)=>{cb(r);db.close()})
           .catch((err) => {throw err});
       },true);//keepOpen
-
   }
 
   //----------------------------------------------------------------------------
   zapCol() {   // Delete the collection
-    console.log("Zapping the database ...");
-    this.command((db)=>{db.dropCollection(this.collection)});
+    //console.log("Zapping the collection : " + this.url +"/" +this.collection);
+    this.command((db)=>{
+      db.dropCollection(this.collection)
+          .then((r)=>{db.close();})
+          .catch((e)=>{console.log("Error zapping collection : ",e)})}
+          ,true // keepOpen
+        );
   }
 }
 
@@ -120,7 +124,7 @@ function normalizeDate(date) {   // date can be a string, null or a Date object
   var r;
   if(!date) { r = new Date()} else {r=new Date(date)};
   r.setUTCHours(0,0,0,0);
-  console.log("Date was normalized to :", r);
+  //console.log("Date was normalized to :", r);
   return r;
 }
 
