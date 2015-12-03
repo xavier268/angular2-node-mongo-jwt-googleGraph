@@ -1,0 +1,17 @@
+========================================
+Revoir conception des call à MyMongo pour avoir un format unique, toujours asynchrone, chainable.
+
+mm.ffff(params, ..., next) dans lequel next est le call back vers la suite.
+"next" est appellé à l'intérieur de chaque fonction, sous la forme next(err, response);
+   - response est le resultat de la fonction, si erreur est falsy (null ou undefined)
+   - si next n'est pas defini, renvoi une promise
+
+getStatus(next);
+findAll(next);
+createIndexes(next);
+update(doc,next);
+
+
+
+===========================================
+Faire les test pour acl.js  ?

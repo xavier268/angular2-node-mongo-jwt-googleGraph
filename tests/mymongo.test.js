@@ -4,8 +4,53 @@
 //==============================================================================
 var expect = require("expect");
 
+describe("mymongo interface v2 testing",function(){
 
-describe("mymongo.js testing suite", function() {
+
+  var mm = require("../server/mongo/mymongo").mymongo();
+  mm.collection = "testCollection";console.log("Switching to the test collection : ",mm.collection);
+  //mm.url = "mongodb://localhost:8888/wrongurl";console.log("Switching to the test url : ",mm.url);
+
+  //==================================
+  it("ngcommand empty async",function(done){
+    mm.ngCommand(    (err,db)=>{
+        console.log("ngCommand called with err : ",err, " and db : ",db);
+        if(!err) {db.close();};
+        done();
+        })
+      });
+
+
+  //==================================
+  it("ngcommand empty promise",function(done){
+    mm.ngCommand()
+    .then((db)=> {console.log("db promise = ",db);db.close();done();})
+    .catch((e)=>{console.log("error promise = ",e);done();});
+  });
+
+  //====================================
+  it("ngstatus in async mode",function(done){
+    mm.ngStatus((err,stat)=>{
+      if(err) {
+        console.log("Err in test ng status :", err);
+        done();
+      }else {
+        console.log("Stats in test : ",stat);
+        done();
+      }
+    })
+  });
+
+  //====================================
+  it("ngstatus in promise mode",function(done){
+    mm.ngStatus()
+    .then((s)=>{console.log("Status returned :",s);done();})
+    .catch((e)=>{console.log("Error in ngstatus test promise : ",e);done();});
+  });
+
+}); // describe
+
+xdescribe("mymongo.js testing suite", function() {
 
   var mm = require("../server/mongo/mymongo").mymongo();
       mm.collection = "testCollection";
