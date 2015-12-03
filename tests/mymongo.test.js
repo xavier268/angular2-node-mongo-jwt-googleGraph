@@ -44,7 +44,7 @@ describe("mymongo interface v2 testing", function () {
   });
 
   //====================================
-  it("ngstatus in promise mode",function(done){
+  xit("ngstatus in promise mode",function(done){
     mm.ngStatus()
     .then((s)=>{console.log("Status returned :",s);done();})
     .catch((e)=>{console.log("Error in ngstatus test promise : ",e);});
@@ -52,7 +52,30 @@ describe("mymongo interface v2 testing", function () {
 
   });
 
-}); // describe
+  //========================================
+  xit("ngGetIndexes test in promise mode",function(done){
+    mm.ngGetIndexes()
+      .then((i)=>{console.log("Indexes in test : ",i);done();})
+      .catch((e)=>{console.log("Erreur in ngGetIndexes test : ",e);});
+  });
+
+  //==========================================
+  it("ngGetIndexes test in async mode",function(done){
+    mm.ngGetIndexes( (e,i)=>{
+      if(e) {
+        console.log("Erreur test ngGetIndexes async",e);
+        throw e;
+      }else {
+        console.log("Indexes in test : ",i);
+        done();
+      }
+    }
+
+    );
+  });
+
+
+}); // describe ==============================================================
 
 xdescribe("mymongo.js testing suite", function() {
 
