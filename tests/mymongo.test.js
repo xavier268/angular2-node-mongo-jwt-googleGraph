@@ -1,24 +1,26 @@
-"uses strict";
+  "uses strict";
+
 //==============================================================================
 //                    Basic moch test for mymongo.js
 //==============================================================================
-var expect = require("expect");
+var expect = require ( "expect" );
 
-describe("mymongo interface v2 testing",function(){
+describe("mymongo interface v2 testing", function () {
 
 
 
-  var mm = require("../server/mongo/mymongo").mymongo();
-  mm.collection = "testCollection";console.log("Switching to the test collection : ",mm.collection);
-  //mm.url = "mongodb://localhost:8888/wrongurl";console.log("Switching to the test url : ",mm.url);
+  var mm = require ("../server/mongo/mymongo").mymongo ();
+  mm.collection = "testCollection";
+  console.log("Switching to the test collection : ", mm.collection);
+    //mm.url = "mongodb://localhost:8888/wrongurl";console.log("Switching to the test url : ",mm.url);
 
   //==================================
   xit("ngcommand empty async",function(done){
-    mm.ngCommand(    (err,db)=>{
+        mm.ngCommand(  (err,db)=>{
         console.log("ngCommand called with err : ",err, " and db : ",db);
-        if(!err) {db.close();};
+        if(!err) {db.close();}
         done();
-        })
+      });
       });
 
 
@@ -39,14 +41,14 @@ describe("mymongo interface v2 testing",function(){
         console.log("Stats in test : ",stat);
         done();
       }
-    })
+    });
   });
 
   //====================================
   it("ngstatus in promise mode",function(done){
     mm.ngStatus()
     .then((s)=>{console.log("Status returned :",s);done();})
-    .catch((e)=>{console.log("Error in ngstatus test promise : ",e);})
+    .catch((e)=>{console.log("Error in ngstatus test promise : ",e);});
         // Beacuse done() is not in catch, will fail test on error ...
 
   });
