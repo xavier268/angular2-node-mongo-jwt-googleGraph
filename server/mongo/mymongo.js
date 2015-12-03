@@ -1,5 +1,6 @@
 "use strict";
 
+
 //==============================================================================
 //                Mongodb access layer
 //==============================================================================
@@ -23,9 +24,8 @@ class MyMongo {
                {"unique":true,"name":"UniqueEmailDateIndex"}
              )
              .then((r)=>{console.log("Index creation : ",r);db.close();})
-             .catch((e)=>{console.log("Error creating default indexes : ",err);db.close();throw err});
-              }
-          ,true)// keepOpen
+             .catch((e)=>{console.log("Error creating default indexes : ",e);db.close();throw e;});
+           },true);  // keepOpen
     }
 
   //----------------------------------------------------------------------------
@@ -48,18 +48,18 @@ class MyMongo {
         var _this=this; // Lorsque la promise sera apellée, this sera undefined !
         return new Promise( function(resolve,reject) {
           _this.mc.connect(_this.url)
-          .then((r)=>{resolve(r)})
-          .catch((e)=>{reject(e)});
-          })
-          };
-        };
-      
+          .then((r)=>{resolve(r);})
+          .catch((e)=>{reject(e);});
+        });
+          }
+        }
+
 
   //----------------------------------------------------------------------------
   status(cb) { // callBack will be called with (stats) or null if error
     this.command((db) => {
         db.stats((err,st)=>{
-              if(err) {console.log("error status call",err);};
+              if(err) {console.log("error status call",err);}
               cb(st);
               db.close();
               });
@@ -71,14 +71,14 @@ class MyMongo {
       this.ngCommand()
       .then((db)=>{
           db.stats()
-            .then((st)=>{next(null,st);db.close();})
+            .then((st)=>{next(null,st);db.close();});
           })
-      .catch((err)=>{console.log("Error in ngstatus :",err);next(err,null)})
+      .catch((err)=>{console.log("Error in ngstatus :",err);next(err,null);});
     }else {
       var _this=this;
       return new Promise(function(resolve,reject){
-        return _this.ngStatus((err,result)=>{if(err){reject(err);throw err;}else{resolve(result);}})
-      })
+        return _this.ngStatus((err,result)=>{if(err){reject(err);}else{resolve(result);}});
+      });
     }
   }
 
@@ -95,6 +95,21 @@ class MyMongo {
         },true);// keepOpen
   }
 
+  ngGetIndexes(next) { // next(err, result) ou sinon, promise de result
+    if(next) {
+      this.ngCommand()
+        .then((db)=>{db.indexInformation(this.collection,{"full":true})
+          .then((idx)=>{next(null,idx);db.close();});
+        })
+        .catch((err)=>{console.log("Error in ngGetIndexes : ",err);next(err,null);});
+    }else{
+      var _this=this;
+      return new Promise(function(resolve,reject){
+        return _this.ngGetIndexes((err,result)=>{if(err){reject(err);}else{resolve(result);}});
+      });
+    }
+  }
+
   //----------------------------------------------------------------------------
   findAll(cb) { // callback will be called with  an array of docs or [] if error
     //console.log("Retrieving all records");
@@ -109,8 +124,8 @@ class MyMongo {
                       console.log("Error in findAll : ",err);
                       db.close();
                       cb([]);
-                    };
-                  })
+                    }
+                  });
           },true);  //keepOpen
   }
   //----------------------------------------------------------------------------
@@ -130,7 +145,7 @@ class MyMongo {
           col.updateOne(
                 {'email':doc.email, 'quand':doc.quand}, {$set:{'kg':doc.kg}},
                 {'upsert':true})
-          .then((r)=>{cb(r);db.close()})
+          .then((r)=>{cb(r);db.close();})
           .catch((err) => {console.log("Error in update",err);db.close();});
       },true);//keepOpen
   }
@@ -141,8 +156,8 @@ class MyMongo {
     this.command((db)=>{
       db.dropCollection(this.collection)
           .then((r)=>{db.close();})
-          .catch((e)=>{console.log("Error zapping collection : ",e);db.close();})}
-          ,true // keepOpen
+          .catch((e)=>{console.log("Error zapping collection : ",e);db.close();});},
+          true // keepOpen
         );
   }
 }
@@ -153,7 +168,7 @@ class MyMongo {
 
 function normalizeDate(date) {   // date can be a string, null or a Date object
   var r;
-  if(!date) { r = new Date()} else {r=new Date(date)};
+  if(!date) { r = new Date();} else {r=new Date(date);}
   r.setUTCHours(0,0,0,0);
   //console.log("Date was normalized to :", r);
   return r;
@@ -163,7 +178,7 @@ function normalizeDate(date) {   // date can be a string, null or a Date object
 // Instanciate a single, static, singleton instance
 //==============================================================================
 console.log("Creating the singleton MyMongo instance");
-MyMongo.instance = new MyMongo;
+MyMongo.instance = new MyMongo();
 
 //==============================================================================
 // Define exports
@@ -172,4 +187,4 @@ MyMongo.instance = new MyMongo;
 exports.mymongo = function() {
   console.log("Accessing the MyMongo singleton instance");
   return MyMongo.instance;
-}
+};

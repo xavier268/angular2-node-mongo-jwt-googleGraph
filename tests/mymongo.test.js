@@ -1,23 +1,25 @@
-"uses strict";
+  "use strict";
+  // jshint mocha:true
+
 //==============================================================================
 //                    Basic moch test for mymongo.js
 //==============================================================================
-var expect = require("expect");
+var expect = require ( "expect" );
 
-describe("mymongo interface v2 testing",function(){
+describe("mymongo interface v2 testing", function () {
 
-
-  var mm = require("../server/mongo/mymongo").mymongo();
-  mm.collection = "testCollection";console.log("Switching to the test collection : ",mm.collection);
-  //mm.url = "mongodb://localhost:8888/wrongurl";console.log("Switching to the test url : ",mm.url);
+  var mm = require ("../server/mongo/mymongo").mymongo ();
+  mm.collection = "testCollection";
+  console.log("Switching to the test collection : ", mm.collection);
+    //mm.url = "mongodb://localhost:8888/wrongurl";console.log("Switching to the test url : ",mm.url);
 
   //==================================
-  it("ngcommand empty async",function(done){
-    mm.ngCommand(    (err,db)=>{
+  xit("ngcommand empty async",function(done){
+        mm.ngCommand(  (err,db)=>{
         console.log("ngCommand called with err : ",err, " and db : ",db);
-        if(!err) {db.close();};
+        if(!err) {db.close();}
         done();
-        })
+      });
       });
 
 
@@ -38,19 +40,42 @@ describe("mymongo interface v2 testing",function(){
         console.log("Stats in test : ",stat);
         done();
       }
-    })
+    });
   });
 
   //====================================
-  it("ngstatus in promise mode",function(done){
+  xit("ngstatus in promise mode",function(done){
     mm.ngStatus()
     .then((s)=>{console.log("Status returned :",s);done();})
-    .catch((e)=>{console.log("Error in ngstatus test promise : ",e);})
+    .catch((e)=>{console.log("Error in ngstatus test promise : ",e);});
         // Beacuse done() is not in catch, will fail test on error ...
 
   });
 
-}); // describe
+  //========================================
+  xit("ngGetIndexes test in promise mode",function(done){
+    mm.ngGetIndexes()
+      .then((i)=>{console.log("Indexes in test : ",i);done();})
+      .catch((e)=>{console.log("Erreur in ngGetIndexes test : ",e);});
+  });
+
+  //==========================================
+  it("ngGetIndexes test in async mode",function(done){
+    mm.ngGetIndexes( (e,i)=>{
+      if(e) {
+        console.log("Erreur test ngGetIndexes async",e);
+        throw e;
+      }else {
+        console.log("Indexes in test : ",i);
+        done();
+      }
+    }
+
+    );
+  });
+
+
+}); // describe ==============================================================
 
 describe("mymongo.js testing suite", function() {
 
