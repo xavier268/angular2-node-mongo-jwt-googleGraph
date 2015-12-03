@@ -1,4 +1,5 @@
-  "uses strict";
+  "use strict";
+  // jshint mocha:true
 
 //==============================================================================
 //                    Basic moch test for mymongo.js
@@ -6,8 +7,6 @@
 var expect = require ( "expect" );
 
 describe("mymongo interface v2 testing", function () {
-
-
 
   var mm = require ("../server/mongo/mymongo").mymongo ();
   mm.collection = "testCollection";
