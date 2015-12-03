@@ -7,6 +7,7 @@ var expect = require("expect");
 describe("mymongo interface v2 testing",function(){
 
 
+
   var mm = require("../server/mongo/mymongo").mymongo();
   mm.collection = "testCollection";console.log("Switching to the test collection : ",mm.collection);
   //mm.url = "mongodb://localhost:8888/wrongurl";console.log("Switching to the test url : ",mm.url);
