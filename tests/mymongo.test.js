@@ -12,7 +12,7 @@ describe("mymongo interface v2 testing",function(){
   //mm.url = "mongodb://localhost:8888/wrongurl";console.log("Switching to the test url : ",mm.url);
 
   //==================================
-  it("ngcommand empty async",function(done){
+  xit("ngcommand empty async",function(done){
     mm.ngCommand(    (err,db)=>{
         console.log("ngCommand called with err : ",err, " and db : ",db);
         if(!err) {db.close();};
@@ -22,14 +22,14 @@ describe("mymongo interface v2 testing",function(){
 
 
   //==================================
-  it("ngcommand empty promise",function(done){
+  xit("ngcommand empty promise",function(done){
     mm.ngCommand()
     .then((db)=> {console.log("db promise = ",db);db.close();done();})
     .catch((e)=>{console.log("error promise = ",e);done();});
   });
 
   //====================================
-  it("ngstatus in async mode",function(done){
+  xit("ngstatus in async mode",function(done){
     mm.ngStatus((err,stat)=>{
       if(err) {
         console.log("Err in test ng status :", err);
@@ -45,7 +45,9 @@ describe("mymongo interface v2 testing",function(){
   it("ngstatus in promise mode",function(done){
     mm.ngStatus()
     .then((s)=>{console.log("Status returned :",s);done();})
-    .catch((e)=>{console.log("Error in ngstatus test promise : ",e);done();});
+    .catch((e)=>{console.log("Error in ngstatus test promise : ",e);})
+        // Beacuse done() is not in catch, will fail test on error ...
+
   });
 
 }); // describe

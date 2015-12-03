@@ -47,16 +47,13 @@ class MyMongo {
       } else {
         var _this=this; // Lorsque la promise sera apellée, this sera undefined !
         return new Promise( function(resolve,reject) {
-          _this.mc.connect(_this.url,  function(err,db){
-            if(err){
-              reject(err);
-            }else {
-              resolve(db);
-            }
+          _this.mc.connect(_this.url)
+          .then((r)=>{resolve(r)})
+          .catch((e)=>{reject(e)});
           })
-          });
+          };
         };
-      }
+      
 
   //----------------------------------------------------------------------------
   status(cb) { // callBack will be called with (stats) or null if error
@@ -73,21 +70,15 @@ class MyMongo {
     if(next) {
       this.ngCommand()
       .then((db)=>{
-          db.stats((err,st)=>{
-                if(err) {
-                  console.log("error status call",err);
-                  next(err,null);
-                }else{
-                  next(null,st);
-                  db.close();
-                }})})
-      .catch((err)=>{console.log("Error in ngstatus :",err);throw err;});
+          db.stats()
+            .then((st)=>{next(null,st);db.close();})
+          })
+      .catch((err)=>{console.log("Error in ngstatus :",err);next(err,null)})
     }else {
       var _this=this;
       return new Promise(function(resolve,reject){
-        _this.ngStatus((err,result)=>{if(err){reject(err);return;}else{resolve(result);}})
+        return _this.ngStatus((err,result)=>{if(err){reject(err);throw err;}else{resolve(result);}})
       })
-      return
     }
   }
 
