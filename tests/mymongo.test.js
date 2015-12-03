@@ -12,7 +12,7 @@ describe("mymongo interface v2 testing",function(){
   //mm.url = "mongodb://localhost:8888/wrongurl";console.log("Switching to the test url : ",mm.url);
 
   //==================================
-  xit("ngcommand empty async",function(done){
+  it("ngcommand empty async",function(done){
     mm.ngCommand(    (err,db)=>{
         console.log("ngCommand called with err : ",err, " and db : ",db);
         if(!err) {db.close();};
@@ -22,14 +22,14 @@ describe("mymongo interface v2 testing",function(){
 
 
   //==================================
-  xit("ngcommand empty promise",function(done){
+  it("ngcommand empty promise",function(done){
     mm.ngCommand()
     .then((db)=> {console.log("db promise = ",db);db.close();done();})
     .catch((e)=>{console.log("error promise = ",e);done();});
   });
 
   //====================================
-  xit("ngstatus in async mode",function(done){
+  it("ngstatus in async mode",function(done){
     mm.ngStatus((err,stat)=>{
       if(err) {
         console.log("Err in test ng status :", err);
@@ -52,7 +52,7 @@ describe("mymongo interface v2 testing",function(){
 
 }); // describe
 
-xdescribe("mymongo.js testing suite", function() {
+describe("mymongo.js testing suite", function() {
 
   var mm = require("../server/mongo/mymongo").mymongo();
       mm.collection = "testCollection";

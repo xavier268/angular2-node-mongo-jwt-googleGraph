@@ -12,7 +12,7 @@ function PA() {
 
 
 
-xdescribe("Promise tests", function(){
+describe("Promise tests", function(){
 
   it("Test1",function(){
 
