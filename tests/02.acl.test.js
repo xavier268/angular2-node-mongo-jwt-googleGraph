@@ -20,42 +20,27 @@ describe("Full test for acl.js in a test server",function(){
   var supertest = require("supertest");
   var app = express();
   var acl = require("../server/acl");
-  var bodyParser = require("body-parser");
 
-  var server;
+
+  var jwt; // last jwt read ...
 
 
 //===================================
-  before(function(){
+  before(function(){ // before all ...
     console.log("Running test server");
 
     expect(acl).toBeTruthy();
     expect(app).toBeTruthy();
     expect(acl.aclrouter).toBeTruthy();
 
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
+
     app.use("/ttt",acl.aclrouter());
     app.use("/protected", acl.aclauth());
-    app.get("/protected",function(req,res){res.send("OK2");});
-
-
-    app.all("/",function(req,res){res.send("OK1");});
-
-    //server = app.listen(8888);
-    //done();
+    app.all("/protected", function(req,res){res.send("OK1");});
+    app.all("/",          function(req,res){res.send("OK2");});
 
     });
 
-    //====================================
-    /*
-    after(function(){
-
-      console.log("Closing server");
-      server.close();
-
-    });
-    */
 
   //=======================================
   it("test server working",function(done){
@@ -65,7 +50,7 @@ describe("Full test for acl.js in a test server",function(){
         .end(function(err,res){
               //console.log("Supertest gave : err=",err," res=",res);
               if(err) throw err;
-              expect(res.text).toBe("OK1");
+              expect(res.text).toBe("OK2");
               done();
             });
   });
@@ -80,6 +65,8 @@ describe("Full test for acl.js in a test server",function(){
         .end(function(err,res){
             if(err) throw err;
             console.log("Token returned :",res.text);
+            jwt = "Bearer "+ res.text;
+            expect(jwt.length).toBeGreaterThan(50);
             done();
 
         });
@@ -87,25 +74,54 @@ describe("Full test for acl.js in a test server",function(){
   });
 
   //==========================================
-  it("protected access",function(done){
+  it("protected access should fail with no header",function(done){
       supertest(app)
           .post("/protected")
           .expect(401)
           .end(function(err,res){
             if(err) throw err;
-            console.log("Protected POST answer : ",res.text);
+            //console.log("Protected POST answer : ",res.text);
 
             supertest(app)
                 .get("/protected")
                 .expect(401)
                 .end(function(err,res){
                   if(err) throw err;
-                  console.log("Proteced GET answer : ",res.text);
-
+                  //console.log("Proteced GET answer : ",res.text);
                   done();
                 });
           });
   });
+
+  //=================================================================
+  it("protected access should succeed with correct header",function(done){
+      supertest(app)
+          .get("/protected")
+          .set("Authorization",jwt)
+          .expect(200)
+          .end(function(err,res){
+            if(err) throw err;
+            //console.log("Success GET answer : ",res.text);
+            expect(res.text).toBe("OK1");
+            done();
+                });
+          });
+
+
+//=================================================================
+    it("protected access should fail with wrong header",function(done){
+        supertest(app)
+            .get("/protected")
+            .set("Authorization",jwt + "xxxx")
+            .expect(401)
+            .end(function(err,res){
+              if(err) throw err;
+              //console.log("Failed GET answer : ",res.text);
+              done();
+                  });
+            });
+
+
 
 
 

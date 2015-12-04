@@ -69,26 +69,26 @@ aclrouter.use(bodyParser.json());
 // or user and password as x-www-form-urlencoded values in POST body
 // Returns text of the token.
 aclrouter.post('/',(req,res)=>{
-    console.log("Request jwt body : ",req.body);
+    //console.log("Request jwt body : ",req.body);
     var token = getToken(req.body.user, req.body.password);
     res.send(token);
 });
 
 // Middleware - Validate header against jwt token and save payload in req.payload
 function aclauth(req,res,next) {
-  console.log("Checking for authentication header");
+  //console.log("Checking for authentication header");
   var t = req.get("Authorization");
   if(!t){
     res.status(401).send("Not authorized !");
     return;
   }
   t = t.replace(/^[ ]*Bearer[ ]+/,"");
-  console.log("Token : <"+t+">");
+  // console.log("Token : <"+t+">");
   req.payload = checkToken(t);
   if(!req.payload ) {
     res.status(401).send("Not authorized !");
     }else {
-    console.log("Authorized with",req.payload);
+    console.log("Authorized access for ",req.payload);
     next();
     }
 
