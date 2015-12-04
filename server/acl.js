@@ -75,7 +75,7 @@ aclrouter.post('/',(req,res)=>{
 });
 
 // Middleware - Validate header against jwt token and save payload in req.payload
-function auth(req,res,next) {
+function aclauth(req,res,next) {
   console.log("Checking for authentication header");
   var t = req.get("Authorization");
   if(!t){
@@ -94,8 +94,8 @@ function auth(req,res,next) {
 
 }
 
-//==============================================================================
+//============================EXPORTS====================================
 // Provides the middleware to secure (VERIFY) any other router
-exports.auth = auth;
+exports.aclauth = function(){return aclauth;};
 // Provides the router that can GENERATES new tokens
 exports.aclrouter = function(){return aclrouter;};

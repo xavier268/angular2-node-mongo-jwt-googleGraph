@@ -15,7 +15,7 @@ var acl = require("./acl");
  var router = express.Router();
 
  // Activate middleware for access control - authenticate all api calls to this router
- router.use(acl.auth);
+ router.use(acl.aclauth());
 
  // this will let us get the data from a POST
  router.use(bodyParser.urlencoded({ extended: true }));

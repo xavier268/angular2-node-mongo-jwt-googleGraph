@@ -95,6 +95,7 @@ describe("mymongo class testing", function () {
     );
   });
 
+
   //================================================
   it("ngFindAll in promise mode",function(done){
     mm.ngFindAll()
