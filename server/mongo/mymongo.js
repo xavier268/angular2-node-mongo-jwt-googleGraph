@@ -219,7 +219,30 @@ class MyMongo {
           true // keepOpen
         );
   }
-}
+
+  ngZapCol(next) {
+    if(next) {
+      this.ngCommand()
+          .then((db)=>{
+              db.dropCollection(this.collection)
+                .then((r)=>{db.close();next(null,r);});
+          })
+          .catch((err)=>{console.log("Error in ngUpdate ",err); next(err,null);});
+
+
+
+
+
+    }else {
+      var _this=this;
+      return new Promise(function(resolve,reject){
+        return _this.ngZapCol((err,result)=>{if(err){reject(err);}else{resolve(result);}});
+      });
+    }
+  }
+
+
+} // class
 
 //============================================================================
 //  Helper functions
