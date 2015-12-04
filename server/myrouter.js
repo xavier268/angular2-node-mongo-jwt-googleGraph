@@ -39,23 +39,20 @@ router.get('/status', (req,res) => {
 
 // Get all records
 router.get('/poids',(req,res)=>{
-    mymongo.findAll(
-      (docs) => {res.json(docs)}
-    );
+    mymongo.ngFindAll()
+      .then((docs) => {res.json(docs);});
 });
 
 // Post a record to upsert
 router.post('/poids',(req,res)=>{
-      mymongo.update(
-        req.body,
-        (r)=>{res.json(r)}
-      );
+      mymongo.ngUpdate(req.body)
+          .then((r)=>{res.json(r);});
 });
 
 // Delete all collection
 router.delete('/poids',(req,res)=>{
-    mymongo.zapCol();
-    res.json({"ok":1,"message":"Database was deleted !"});
+    mymongo.ngZapCol()
+      .then((r)=>{res.json({"ok":1,"message":"Database was deleted !"});});
 });
 
 
@@ -64,4 +61,4 @@ router.delete('/poids',(req,res)=>{
 
 exports.myrouter = function() {
   return router;
-}
+};

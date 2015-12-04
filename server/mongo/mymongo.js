@@ -26,7 +26,7 @@ class MyMongo {
                {"email":1,"quand":1},
                {"unique":true,"name":"UniqueEmailDateIndex"}
              )
-             .then((r)=>{console.log("Index creation : ",r);db.close();})
+             .then((r)=>{db.close();})
              .catch((e)=>{console.log("Error creating default indexes : ",e);db.close();throw e;});
            })
       .catch((e)=>{console.log("Error in constructing MyMong class",e);throw e;});

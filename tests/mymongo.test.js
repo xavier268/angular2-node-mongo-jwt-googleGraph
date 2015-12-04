@@ -10,7 +10,6 @@ var expect = require ( "expect" );
 describe("mymongo class testing", function () {
 
   var o1 = {"quand":"2015-11-04","kg":85.2,"email":"testmailv2"};
-  var o2 = {"quand":"2015-11-04","kg":90,"email":"testmailv2"};
 
 
   var mm = require ("../server/mongo/mymongo").mymongo ();
@@ -46,7 +45,8 @@ describe("mymongo class testing", function () {
         console.log("Err in test ng status :", err);
         done();
       }else {
-        console.log("Stats in test : ",stat);
+        //console.log("Stats in test : ",stat);
+        expect(stat.ok).toBe(1);
         done();
       }
     });
@@ -55,7 +55,11 @@ describe("mymongo class testing", function () {
   //====================================
   it("ngstatus in promise mode",function(done){
     mm.ngStatus()
-    .then((s)=>{console.log("Status returned :",s);done();})
+    .then((s)=>{
+        //console.log("Status returned :",s);
+        expect(s.ok).toBe(1);
+        done();
+        })
     .catch((e)=>{console.log("Error in ngstatus test promise : ",e);});
         // Beacuse done() is not in catch, will fail test on error ...
 
@@ -64,7 +68,12 @@ describe("mymongo class testing", function () {
   //========================================
   it("ngGetIndexes test in promise mode",function(done){
     mm.ngGetIndexes()
-      .then((i)=>{console.log("Indexes in test : ",i);done();})
+      .then((i)=>{
+            //console.log("Indexes in test : ",i);
+            expect(i).toBeTruthy();
+            expect(i).toBeAn(Array);
+            expect(i.length).toBeGreaterThan(1);
+            done();})
       .catch((e)=>{console.log("Erreur in ngGetIndexes test : ",e);});
   });
 
@@ -75,7 +84,10 @@ describe("mymongo class testing", function () {
         console.log("Erreur test ngGetIndexes async",e);
         throw e;
       }else {
-        console.log("Indexes in test : ",i);
+        //console.log("Indexes in test : ",i);
+        expect(i).toBeTruthy();
+        expect(i).toBeAn(Array);
+        expect(i.length).toBeGreaterThan(1);
         done();
       }
     }
@@ -87,8 +99,10 @@ describe("mymongo class testing", function () {
   it("ngFindAll in promise mode",function(done){
     mm.ngFindAll()
       .then((docs)=>{
-          console.log("ngFindAll testing : ",docs);
-          expect(docs.length).toBe(1);
+          //console.log("ngFindAll testing : ",docs);
+          expect(docs).toBeTruthy();
+          expect(docs).toBeAn(Array);
+          expect(docs.length).toBeLessThan(2);
           done();
           })
       .catch((e)=>{console.log("Erreur in test of ngFindAll ",e);});
@@ -108,22 +122,25 @@ describe("mymongo class testing", function () {
   });
 
 //=================================================
-  xit("ngZapCol test and ngUpdate",function(done){
+  it("ngZapCol test and ngUpdate",function(done){
     mm.ngZapCol()
-      .then((r)=>{
+      .then((z)=>{
             //console.log("Result zap col : ",r);
-            expect(r).toBe(true);
+            expect(z).toBe(true);
+            mm.ngUpdate(o1)
+              .then((r)=>{
+                  //console.log("Updated in test ngUpdate : ",r);
+                  expect(r.result.ok).toBe(1);
+                  expect(r.matchedCount).toBe(1);
+                  expect(r.modifiedCount).toBe(0);
+                  expect(r.upsertedCount).toBe(1);
+                  expect(r.result.n).toBe(1);
+                  done();
+                  })
+              .catch((e)=>{console.log("Error in test ngUpdate (afetr zap) ",e);});
             })
-      .catch((e)=>{console.log("Error in test ngZapCol :",e);});
-      mm.ngUpdate(o1)
-        .then((r)=>{
-            //console.log("Updated in test ngUpdate : ",r);
-            expect(r.result.ok).toBe(1);
-            expect(r.result.nModified).toBe(1);
-            expect(r.result.n).toBe(1);
-            done();
-            })
-        .catch((e)=>{console.log("Error in test of ngzapcol & ngUpdate",e);});
+      .catch((e)=>{console.log("Error in test ngZapCol & update :",e);});
+
   });
 
 }); // describe class myMongo ======================
