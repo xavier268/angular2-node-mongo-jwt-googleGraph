@@ -181,13 +181,13 @@ class MyMongo {
                   Normalize la date
 
       Accepte null, une Date ou une string (representant une date LOCALE)
-      Normalise à 0h0:00:00 LOCALE
+      Normalise à 12h0:00:00 LOCALES (pour eviter pb de changt de jour)
       Garantit de renvoyer un OBJET DATE non null
 -------------------------------------------------------------------------------*/
 function  normalizeDate(date) {
   var r;
   if(!date) { r = new Date();} else {r=new Date(date);}
-  r.setHours(0,0,0,0);
+  r.setHours(12,0,0,0);
   //console.log("Date was normalized to :", r);
   return r;
 }
