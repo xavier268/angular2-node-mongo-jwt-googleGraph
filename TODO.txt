@@ -1,3 +1,5 @@
 ===========================================
 
 Integration tests for the API ?
+
+Ajout une url dans l'acl router, qui soit protégée par auth, pour décoder qui on est dans le jwt - par ex, jwt/whoami ?
