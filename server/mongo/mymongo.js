@@ -127,8 +127,7 @@ class MyMongo {
     // Erreur si doc non conforme
     if(!doc || !doc.email || !doc.kg) {
       console.log("Cannot update empty doc :", doc);
-      if(next)  {next(new Error(doc),null);return;}
-      else      {return new Promise(function(resolve,reject){reject(doc);});}
+      throw("Invalid doc format");
     }
     // On normalize la date, pour eviter de créer un record avec une string !
     doc.quand = normalizeDate(doc.quand);
