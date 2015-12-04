@@ -1,5 +1,6 @@
   "use strict";
   // jshint mocha:true
+describe("Full test set for myMongo.js",function(){
 
 //==============================================================================
 //                    Basic moch test for mymongo.js
@@ -8,15 +9,19 @@ var expect = require ( "expect" );
 
 describe("mymongo interface v2 testing", function () {
 
+  var o1 = {"quand":"2015-11-04","kg":85.2,"email":"testmailv2"};
+  var o2 = {"quand":"2015-11-04","kg":90,"email":"testmailv2"};
+
+
   var mm = require ("../server/mongo/mymongo").mymongo ();
   mm.collection = "testCollection";
   console.log("Switching to the test collection : ", mm.collection);
-    //mm.url = "mongodb://localhost:8888/wrongurl";console.log("Switching to the test url : ",mm.url);
+  //mm.url = "mongodb://localhost:8888/wrongurl";console.log("Switching to the test url : ",mm.url);
 
   //==================================
-  xit("ngcommand empty async",function(done){
+  it("ngcommand empty async",function(done){
         mm.ngCommand(  (err,db)=>{
-        console.log("ngCommand called with err : ",err, " and db : ",db);
+        //console.log("ngCommand called with err : ",err, " and db : ",db);
         if(!err) {db.close();}
         done();
       });
@@ -24,14 +29,18 @@ describe("mymongo interface v2 testing", function () {
 
 
   //==================================
-  xit("ngcommand empty promise",function(done){
+  it("ngcommand empty promise",function(done){
     mm.ngCommand()
-    .then((db)=> {console.log("db promise = ",db);db.close();done();})
+    .then((db)=> {
+        //console.log("db promise = ",db);
+        db.close();
+        done();
+        })
     .catch((e)=>{console.log("error promise = ",e);done();});
   });
 
   //====================================
-  xit("ngstatus in async mode",function(done){
+  it("ngstatus in async mode",function(done){
     mm.ngStatus((err,stat)=>{
       if(err) {
         console.log("Err in test ng status :", err);
@@ -44,7 +53,7 @@ describe("mymongo interface v2 testing", function () {
   });
 
   //====================================
-  xit("ngstatus in promise mode",function(done){
+  it("ngstatus in promise mode",function(done){
     mm.ngStatus()
     .then((s)=>{console.log("Status returned :",s);done();})
     .catch((e)=>{console.log("Error in ngstatus test promise : ",e);});
@@ -53,7 +62,7 @@ describe("mymongo interface v2 testing", function () {
   });
 
   //========================================
-  xit("ngGetIndexes test in promise mode",function(done){
+  it("ngGetIndexes test in promise mode",function(done){
     mm.ngGetIndexes()
       .then((i)=>{console.log("Indexes in test : ",i);done();})
       .catch((e)=>{console.log("Erreur in ngGetIndexes test : ",e);});
@@ -74,9 +83,52 @@ describe("mymongo interface v2 testing", function () {
     );
   });
 
+  //================================================
+  it("ngFindAll in promise mode",function(done){
+    mm.ngFindAll()
+      .then((docs)=>{
+          console.log("ngFindAll testing : ",docs);
+          expect(docs.length).toBe(1);
+          done();
+          })
+      .catch((e)=>{console.log("Erreur in test of ngFindAll ",e);});
+  });
+
+  //================================================
+  it("ngUpdate in promise mode",function(done){
+    mm.ngUpdate(o1)
+      .then((r)=>{
+          //console.log("Updated in test ngUpdate : ",r);
+          expect(r.result.ok).toBe(1);
+          done();
+          })
+      .catch((e)=>{console.log("Error in test of ngUpdate",e);});
+
+  });
+
+}); // describe ==========================
+
+describe("Testing helper function",function(){
+
+  //==================================================
+  it("testing normalize for date",function(){
+    var nn = require ("../server/mongo/mymongo").normalizeDate;
+      //console.log(nn().toUTCString());
+    expect(nn().getHours()).toBe(0);
+    expect(nn().getMinutes()).toBe(0);
+    expect(nn().getSeconds()).toBe(0);
+    expect(nn().getDate()).toBe((new Date()).getUTCDate());
+
+    expect(nn("2010-05-01").getMinutes()).toBe(0);
+    expect(nn("2010-5-1").getDate()).toBe(1);
+    expect(nn("2010-5-1").getDate()).toBe(1);
+    expect(nn("2010-05-01T11:11:11").getMinutes()).toBe(0);
+  });
+
 
 }); // describe ==============================================================
 
+//============================================================================
 xdescribe("mymongo.js testing suite", function() {
 
   var mm = require("../server/mongo/mymongo").mymongo();
@@ -165,6 +217,6 @@ xdescribe("mymongo.js testing suite", function() {
       });
 
 
-
+});
 
 });

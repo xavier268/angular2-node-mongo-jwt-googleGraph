@@ -71,7 +71,7 @@ class MyMongo {
       this.ngCommand()
       .then((db)=>{
           db.stats()
-            .then((st)=>{next(null,st);db.close();});
+            .then((st)=>{db.close();next(null,st);});
           })
       .catch((err)=>{console.log("Error in ngstatus :",err);next(err,null);});
     }else {
@@ -98,8 +98,9 @@ class MyMongo {
   ngGetIndexes(next) { // next(err, result) ou sinon, promise de result
     if(next) {
       this.ngCommand()
-        .then((db)=>{db.indexInformation(this.collection,{"full":true})
-          .then((idx)=>{next(null,idx);db.close();});
+        .then((db)=>{db
+            .indexInformation(this.collection,{"full":true})
+            .then((idx)=>{db.close();next(null,idx);});
         })
         .catch((err)=>{console.log("Error in ngGetIndexes : ",err);next(err,null);});
     }else{
@@ -128,6 +129,34 @@ class MyMongo {
                   });
           },true);  //keepOpen
   }
+
+  ngFindAll(next) {
+    if(next) {
+      this.ngCommand()
+        .then((db)=>{
+            db.collection(this.collection)
+              .find({},{_id:0})
+              .toArray((err,docs)=>{
+                  if(!err){
+                    db.close();
+                    next(null,docs);
+                  }else{
+                    console.log("Erreur in ngFindAll ",err);
+                    db.close();
+                    next(err,null);
+                  }
+              });
+            })
+        .catch((err)=>{console.log("Error in ngFindAll",err);next(err,null);});
+
+    }else{
+      var _this=this;
+      return new Promise(function(resolve,reject){
+        return _this.ngFindAll((err,result)=>{if(err){reject(err);}else{resolve(result);}});
+      });
+    }
+
+  }
   //----------------------------------------------------------------------------
   update(doc, cb) { // Update or create the doc in the collection,
                     // and call the callBack with the result
@@ -150,6 +179,36 @@ class MyMongo {
       },true);//keepOpen
   }
 
+  ngUpdate(doc,next) {
+    // Erreur si doc non conforme
+    if(!doc || !doc.email || !doc.kg) {
+      console.log("Cannot update empty doc :", doc);
+      if(next)  {next(new Error(doc),null);return;}
+      else      {return new Promise(function(resolve,reject){reject(doc);});}
+    }
+    // On normalize la date, pour eviter de créer un record avec une string !
+    doc.quand = normalizeDate(doc.quand);
+
+    if(next) {
+      this.ngCommand()
+        .then( (db)=>{
+            db.collection(this.collection)
+                .updateOne(
+                      {'email':doc.email, 'quand':doc.quand},
+                      {$set:{'kg':doc.kg}},
+                      {'upsert':true}
+                )
+                .then((r)=>{ db.close();next(null,r);});
+        })
+        .catch((err)=>{console.log("Error in ngUpdate ",err); next(err,null);});
+    }else {
+      var _this=this;
+      return new Promise(function(resolve,reject){
+        return _this.ngUpdate(doc,(err,result)=>{if(err){reject(err);}else{resolve(result);}});
+      });
+    }
+  }
+
   //----------------------------------------------------------------------------
   zapCol() {   // Delete the collection
     //console.log("Zapping the collection : " + this.url +"/" +this.collection);
@@ -165,11 +224,12 @@ class MyMongo {
 //============================================================================
 //  Helper functions
 //============================================================================
-
-function normalizeDate(date) {   // date can be a string, null or a Date object
+// date can be a string, null or a Date object
+// It will be normalized to 0h0mn0s of LOCAL DATE !
+function  normalizeDate(date) {
   var r;
   if(!date) { r = new Date();} else {r=new Date(date);}
-  r.setUTCHours(0,0,0,0);
+  r.setHours(0,0,0,0);
   //console.log("Date was normalized to :", r);
   return r;
 }
@@ -188,3 +248,5 @@ exports.mymongo = function() {
   console.log("Accessing the MyMongo singleton instance");
   return MyMongo.instance;
 };
+
+exports.normalizeDate = normalizeDate;
