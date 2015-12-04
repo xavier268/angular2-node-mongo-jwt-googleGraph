@@ -72,7 +72,7 @@ aclrouter.post('/',(req,res)=>{
     console.log("Request jwt body : ",req.body);
     var token = getToken(req.body.user, req.body.password);
     res.send(token);
-})
+});
 
 // Middleware - Validate header against jwt token and save payload in req.payload
 function auth(req,res,next) {
@@ -81,7 +81,7 @@ function auth(req,res,next) {
   if(!t){
     res.status(401).send("Not authorized !");
     return;
-  };
+  }
   t = t.replace(/^[ ]*Bearer[ ]+/,"");
   console.log("Token : <"+t+">");
   req.payload = checkToken(t);
@@ -98,4 +98,4 @@ function auth(req,res,next) {
 // Provides the middleware to secure (VERIFY) any other router
 exports.auth = auth;
 // Provides the router that can GENERATES new tokens
-exports.aclrouter = function(){return aclrouter;}
+exports.aclrouter = function(){return aclrouter;};
