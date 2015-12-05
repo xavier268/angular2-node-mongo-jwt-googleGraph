@@ -2,4 +2,7 @@
 
 Integration tests for the API ?
 
+
 Refactoring pour avoir une app (testable) séparée du serveur.
+
+Ajout une url dans l'acl router, qui soit protégée par auth, pour décoder qui on est dans le jwt - par ex, jwt/whoami ?
