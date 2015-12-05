@@ -1,3 +1,5 @@
 ===========================================
 
 Integration tests for the API ?
+
+Refactoring pour avoir une app (testable) séparée du serveur.
