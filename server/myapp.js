@@ -1,0 +1,27 @@
+"use strict";
+/*============================================================================
+            Construction de l'application
+==============================================================================*/
+
+
+// call the packages we need
+var express    = require('express');        // call express
+var app        = express();                 // define our app using express
+
+// REGISTER OUR ROUTES -------------------------------
+
+// Retrieve a configured router object
+var myrouter = require("./myrouter").myrouter();
+app.use('/api', myrouter);
+
+// Provide webtoken generation facilities
+var aclrouter = require("./acl").aclrouter();
+app.use('/jwt',aclrouter);
+
+// Register static route for client files
+app.use(express.static("client"));
+app.use("/lib",express.static("bower_components"));
+
+
+// ========================= Export de l'appli ==============================
+exports.app = function(){return app;};

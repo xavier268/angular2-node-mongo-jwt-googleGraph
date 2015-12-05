@@ -3,27 +3,14 @@
 // Prepare server environment
 //==============================================================================
 
-// call the packages we need
-var express    = require('express');        // call express
-var app        = express();                 // define our app using express
-
-// REGISTER OUR ROUTES -------------------------------
-
-// Retrieve a configured router object
-var myrouter = require("./myrouter").myrouter();
-app.use('/api', myrouter);
-
-// Provide webtoken generation facilities
-var aclrouter = require("./acl").aclrouter();
-app.use('/jwt',aclrouter);
-
-// Register static route for client files
-app.use(express.static("client"));
-app.use("/lib",express.static("bower_components"));
+var app = require("./myapp").app();
 
 // START THE SERVER
 // =============================================================================
-var port = process.env.PORT || 8080;       // set our port
+
+// set our port in the PORT environment variable
+var port = process.env.PORT || 8080;
+
 app.listen(port);
 console.log(new Date());
 console.log('Waiting for connection on port ' + port);
