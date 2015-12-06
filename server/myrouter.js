@@ -1,7 +1,7 @@
 "use strict";
 
 //==============================================================================
-//              Route definitions for the server
+//              Route definitions for the application
 //
 //==============================================================================
 
@@ -20,11 +20,6 @@ var acl = require("./acl");
  // this will let us get the data from a POST
  router.use(bodyParser.urlencoded({ extended: true }));
  router.use(bodyParser.json());
-
-// test route to make sure everything is working
-router.get('/test', function(req, res) {
-    res.json({ message: 'hooray! router was correctly configured !' });
-});
 
 // Test mongo status
 router.get('/status', (req,res) => {

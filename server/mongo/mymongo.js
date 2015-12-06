@@ -4,8 +4,10 @@
 /*==============================================================================
                           Mongodb access layer
 
-Les methodes prennent un callBack optionn next(err,result)
-Si le call back n'est pas fourni, les methodes renvoient une Promise du resultat
+Methodes are accepting next(err,result) as an optionnel last argument callback.
+If callBack is not provided, methodes are returning a Promise.
+
+All setup parameters are defined in the mymongo.conf configuration file.
 =============================================================================*/
 
 class MyMongo {
@@ -18,7 +20,7 @@ class MyMongo {
     console.log("Database url : ", this.url);
     console.log("Database Collection : ",this.collection);
 
-    console.log("Verification/indexation de la base");
+    console.log("Database verification/indexation");
     this.ngCommand()
       .then((db)=> {
              db.createIndex(
@@ -29,18 +31,20 @@ class MyMongo {
              .then((r)=>{db.close();})
              .catch((e)=>{console.log("Error creating default indexes : ",e);db.close();throw e;});
            })
-      .catch((e)=>{console.log("Error in constructing MyMong class",e);throw e;});
+      .catch((e)=>{console.log("Error in constructing MyMongo class",e);throw e;});
     }
 
   /*----------------------------------------------------------------------------
-      Se connecte à la database, renvoie un objet db.
-      Le client de cette méthode doit appeller db.close() dès que possible.
+      Connects to the Databse, providing the db object.
+      You should ensure that db.close() is calles a soon as possible afterwards.
   ---------------------------------------------------------------------------*/
-  ngCommand(next){  // next(err,result) sinon, renvoi une promise de result
+  ngCommand(next){  // next(err,result) otherwise a Promise will be sent
       if(next) {
         this.mc.connect(this.url,next);
       } else {
-        var _this=this; // Lorsque la promise sera apellée, this sera undefined !
+        // When the Promise will be resolved,
+        // the original this won't be available anymore !
+        var _this=this;
         return new Promise( function(resolve,reject) {
           _this.mc.connect(_this.url)
           .then((r)=>{resolve(r);})
@@ -51,7 +55,7 @@ class MyMongo {
 
 
   /*----------------------------------------------------------------------------
-      Infos de statut détaillées de la database
+      Provides detailled stats about database
   -----------------------------------------------------------------------------*/
   ngStatus(next){
     if(next) {
@@ -71,7 +75,7 @@ class MyMongo {
 
 
   /*----------------------------------------------------------------------------
-     Infos sur les indexes de la collection
+     Provides all indexes from the collection
   ----------------------------------------------------------------------------*/
   ngGetIndexes(next) { // next(err, result) ou sinon, promise de result
     if(next) {
@@ -90,7 +94,7 @@ class MyMongo {
   }
 
   /*----------------------------------------------------------------------------
-    Renvoie un tableau de tous les docs de la collection, triés.
+     Provides a sorted rray with all the documents from the collection.
   ----------------------------------------------------------------------------*/
   ngFindAll(next) {
     if(next) {
@@ -120,16 +124,16 @@ class MyMongo {
 
   }
   /*----------------------------------------------------------------------------
-        Met à jour ou crée un nouveau document.
-        Les dates sont normalisées à 0h0:00:00 heure locale.
+        Updates (or creates ) a document.
+        Dates are normalized at 12:00:00 LOCAL TIME.
   -----------------------------------------------------------------------------*/
     ngUpdate(doc,next) {
-    // Erreur si doc non conforme
+    // Reject invalid docs
     if(!doc || !doc.email || !doc.kg) {
-      console.log("Cannot update empty doc :", doc);
+      console.log("Cannot update invalid doc :", doc);
       throw("Invalid doc format");
     }
-    // On normalize la date, pour eviter de créer un record avec une string !
+    // Normalize date to ensure a normalized ISODate object is created/updated
     doc.quand = normalizeDate(doc.quand);
 
     if(next) {
@@ -153,7 +157,7 @@ class MyMongo {
   }
 
   /*----------------------------------------------------------------------------
-        Detruit la collection
+        Drop the collection
   ----------------------------------------------------------------------------*/
   ngZapCol(next) {
     if(next) {
@@ -162,7 +166,7 @@ class MyMongo {
               db.dropCollection(this.collection)
                 .then((r)=>{db.close();next(null,r);});
           })
-          .catch((err)=>{console.log("Error in ngUpdate ",err); next(err,null);});
+          .catch((err)=>{console.log("Error in ngZapCol ",err); next(err,null);});
     }else {
       var _this=this;
       return new Promise(function(resolve,reject){
@@ -177,11 +181,11 @@ class MyMongo {
                     Helper functions
 ==============================================================================*/
 /*------------------------------------------------------------------------------
-                  Normalize la date
+                  Normalize Dates
 
-      Accepte null, une Date ou une string (representant une date LOCALE)
-      Normalise à 12h0:00:00 LOCALES (pour eviter pb de changt de jour)
-      Garantit de renvoyer un OBJET DATE non null
+      Acceptes null, a Date or a string (representanting a LOCAL date)
+      Normalized to 12h0:00:00 LOCAL (to avoid unexpected day change)
+      Will always return a non null Date object
 -------------------------------------------------------------------------------*/
 function  normalizeDate(date) {
   var r;

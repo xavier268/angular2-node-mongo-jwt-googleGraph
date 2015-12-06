@@ -1,7 +1,7 @@
 "use strict";
 
 //==============================================================================
-//                       Access control logic
+//                       Access control logic - acl.js
 //==============================================================================
 
 var aclrouter = require("express").Router();
@@ -15,7 +15,8 @@ var conf = require("./acl.conf");
 //==============================================================================
 
 //------------------------------------------------------------------------------
-// Check user credentials. Return payload ik ok, null if not.
+// Check user credentials. Return payload if ok, null if not.
+// Payload can be any valid truthy object.
 // Adjust as needed to control access ...
 function checkUser(user,password) {
 
@@ -25,7 +26,8 @@ function checkUser(user,password) {
   if(conf.access[user]!=password) return null;
 
   // return the payload will other credentials as needed ...
-  return {'user':user, 'role':'Tout'} ;
+  // NEVER return the submitted password ;-)
+  return {'user':user, 'role':'All'} ;
 }
 
 //------------------------------------------------------------------------------
@@ -57,24 +59,27 @@ function checkToken (t) {
 //==============================================================================
 //                        Route management
 // Verification is using the header "Authorization: Bearer xxxxx.yyy.zzzz"
-// All routers access require a "Content-Type: application/json header".
+// All routers access request need a "Content-Type: application/json header".
 //==============================================================================
 
 // this will let us get the data from a POST
+// either urlencoded, or in json
 aclrouter.use(bodyParser.urlencoded({ extended: true }));
 aclrouter.use(bodyParser.json());
 
-// POST a webToken request.
+// Process a webToken request.
 // { user:lkjlkj, password:lkjlkjlkj } with Content-Type header: application/json
 // or user and password as x-www-form-urlencoded values in POST body
-// Returns text of the token.
+// Returns text of the token as text,
+// or null if invalid credentials are provided
 aclrouter.post('/',(req,res)=>{
     //console.log("Request jwt body : ",req.body);
     var token = getToken(req.body.user, req.body.password);
     res.send(token);
 });
 
-// Middleware - Validate header against jwt token and save payload in req.payload
+// Middleware - Validate header against jwt token
+// and save returned payload in req.payload for later use
 function aclauth(req,res,next) {
   //console.log("Checking for authentication header");
   var t = req.get("Authorization");

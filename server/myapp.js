@@ -1,6 +1,6 @@
 "use strict";
 /*============================================================================
-            Construction de l'application
+                          Application setup
 ==============================================================================*/
 
 
@@ -15,6 +15,7 @@ var myrouter = require("./myrouter").myrouter();
 app.use('/api', myrouter);
 
 // Provide webtoken generation facilities
+// ( Make sure it is OUTSIDE of the protected scope ...)
 var aclrouter = require("./acl").aclrouter();
 app.use('/jwt',aclrouter);
 

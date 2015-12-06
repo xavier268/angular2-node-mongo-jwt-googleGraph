@@ -15,7 +15,7 @@ to enter/update the daily weight, and display various graphs and trends.
 ## Current status and TODOS
 
 API & server side
-* need to use single consistent langage (English ...)
+* findAll should only provides records for selected email
 * doc need to be improved
 * API fuller automatic testing needed
 

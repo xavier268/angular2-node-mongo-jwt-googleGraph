@@ -1,5 +1,6 @@
   "use strict";
-  // jshint mocha:true
+
+// jshint mocha:true
 describe("Full test set for myMongo.js",function(){
 
 //==============================================================================
@@ -144,11 +145,13 @@ describe("mymongo class testing", function () {
 
   });
 
-}); // describe class myMongo ======================
+}); // describe class myMongo ===========
 
+
+//=====================================================
 describe("Testing helper function",function(){
+//=====================================================
 
-  //==================================================
   it("testing normalize for date",function(){
     var nn = require ("../server/mongo/mymongo").normalizeDate;
       //console.log(nn().toUTCString());
@@ -164,8 +167,8 @@ describe("Testing helper function",function(){
   });
 
 
-}); // describe helpre functions ===========================================
+}); // describe helper functions ============
 
 
 
-}); // describe  file ============================
+}); // describe  file ==========

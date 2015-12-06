@@ -1,4 +1,6 @@
-'use strict';                 // Use strict mode to enable ES6 : class, etc ...
+
+// Use strict mode to enable ES6 : class, etc ...
+'use strict';
 
 // Prepare server environment
 //==============================================================================

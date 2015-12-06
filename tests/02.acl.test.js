@@ -2,11 +2,10 @@
 // jshint mocha:true
 
 /*============================================================================
-    Test de acl.js
+    Testing acl.js
 
-En utilisant supertest, pas besoin de lancer réellement le serveur sur un port
-donné ! Il suffit de parametrer app avec les middleware et les appels sont
-simulés !!
+Note that, using 'supertest', we do not need to launch directly a fully
+configured server. Configuring an app is enough to test using volatile ports.
 
 =============================================================================*/
 
@@ -22,7 +21,7 @@ describe("Full test for acl.js in a test server",function(){
   var acl = require("../server/acl");
 
 
-  var jwt; // last jwt read ...
+  var jwt; // last java-web-token read ...
 
 
 //===================================
@@ -61,7 +60,7 @@ describe("Full test for acl.js in a test server",function(){
         .post("/ttt")
         .set("Content-Type","application/json")
         .send({"user":"xavier","password":"blandine"})
-        //.expect(200)
+        .expect(200)
         .end(function(err,res){
             if(err) throw err;
             console.log("Token returned :",res.text);
@@ -87,7 +86,7 @@ describe("Full test for acl.js in a test server",function(){
                 .expect(401)
                 .end(function(err,res){
                   if(err) throw err;
-                  //console.log("Proteced GET answer : ",res.text);
+                  //console.log("Protected GET answer : ",res.text);
                   done();
                 });
           });
