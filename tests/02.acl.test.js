@@ -20,6 +20,8 @@ describe("Full test for acl.js in a test server",function(){
   var app = express();
   var acl = require("../server/acl");
 
+  var testCredentials = {"user":"test","password":"passwd"};
+
 
   var jwt; // last java-web-token read ...
 
@@ -59,7 +61,7 @@ describe("Full test for acl.js in a test server",function(){
       supertest(app)
         .post("/ttt")
         .set("Content-Type","application/json")
-        .send({"user":"xavier","password":"blandine"})
+        .send(testCredentials)
         .expect(200)
         .end(function(err,res){
             if(err) throw err;

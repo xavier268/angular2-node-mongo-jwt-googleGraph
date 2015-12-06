@@ -27,7 +27,7 @@ function checkUser(user,password) {
 
   // return the payload will other credentials as needed ...
   // NEVER return the submitted password ;-)
-  return {'user':user, 'role':'All'} ;
+  return {'user':user, 'email':user+'@test.com','role':'All'} ;
 }
 
 //------------------------------------------------------------------------------
