@@ -10,7 +10,8 @@ A small proof-of-concept application using :
 ## Current status and TODOS
 
 API & server side
-* docs need to be improved
+* need to use single consistent langage (English ...)
+* doc need to be improved
 * API fuller automatic testing needed
 
 Angular2 client needs to be writtent for the API
