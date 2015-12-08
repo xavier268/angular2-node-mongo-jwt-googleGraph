@@ -3,20 +3,30 @@
 // jshint mocha:true
 describe("Full test set for myMongo.js",function(){
 
+var mm = require ("../server/mongo/mymongo").mymongo ();
+var expect = require ( "expect" );
+var defColl; // default collection outside test
+
+  before(function(){
+    defColl = mm.collection;
+    mm.collection = "testCollection";
+    console.log(">>>>> Switching to the test collection : ", mm.collection);
+    //mm.url = "mongodb://localhost:8888/wrongurl";console.log("Switching to the test url : ",mm.url);
+  });
+
+  after(function(){
+    console.log("<<<<< Switching back to default collection : ",defColl);
+    mm.collection = defColl;
+  });
+
 //==============================================================================
 //                    Basic moch test for mymongo.js
 //==============================================================================
-var expect = require ( "expect" );
+
 
 describe("mymongo class testing", function () {
 
-  var o1 = {"quand":"2015-11-04","kg":85.2,"email":"testmailv2"};
-
-
-  var mm = require ("../server/mongo/mymongo").mymongo ();
-  mm.collection = "testCollection";
-  console.log("Switching to the test collection : ", mm.collection);
-  //mm.url = "mongodb://localhost:8888/wrongurl";console.log("Switching to the test url : ",mm.url);
+  var o1 = {"quand":"2015-11-04","kg":85.2,"email":"testmail01"};
 
   //==================================
   it("ngcommand empty async",function(done){
@@ -97,9 +107,11 @@ describe("mymongo class testing", function () {
   });
 
 
+
+
   //================================================
-  it("ngFindAll in promise mode",function(done){
-    mm.ngFindAll()
+  it("ngFindAllFilter in promise mode",function(done){
+    mm.ngFindAllFilter({"email":o1.email})
       .then((docs)=>{
           //console.log("ngFindAll testing : ",docs);
           expect(docs).toBeTruthy();
@@ -107,7 +119,7 @@ describe("mymongo class testing", function () {
           expect(docs.length).toBeLessThan(2);
           done();
           })
-      .catch((e)=>{console.log("Erreur in test of ngFindAll ",e);});
+      .catch((e)=>{console.log("Erreur in test of ngFindAllFilter ",e);});
   });
 
   //================================================

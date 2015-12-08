@@ -15,7 +15,8 @@ to enter/update the daily weight, and display various graphs and trends.
 ## Current status and TODOS
 
 API & server side
-* findAll should only provides records for selected email
+* findAll should only provides records for selected logged in email
+VOIR OU ET COMMENT FOURNIR L'RGUMENT ? Idem pour Update ?
 * doc need to be improved
 * API fuller automatic testing needed
 

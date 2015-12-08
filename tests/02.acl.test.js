@@ -83,6 +83,7 @@ describe("Full test for acl.js in a test server",function(){
             if(err) throw err;
             //console.log("Protected POST answer : ",res.text);
 
+            
             supertest(app)
                 .get("/protected")
                 .expect(401)

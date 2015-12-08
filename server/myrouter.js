@@ -32,16 +32,26 @@ router.get('/status', (req,res) => {
       }   );
 });
 
-// Get all records
+// Get all records - based on logged in email
 router.get('/poids',(req,res)=>{
-    mymongo.ngFindAll()
-      .then((docs) => {res.json(docs);});
+
+    if(!req.payload.email) throw new Error("Cannot get an non logged in user !");
+    var mail = req.payload.email;
+    mymongo.ngFindAllFilter({"email":mail})
+      .then((docs) => {
+        //console.log("Returning database content for payload = ",req.payload,"\nDB Content : \n",docs);
+        res.json(docs);
+      });
 });
 
-// Post a record to upsert
+// Post a record to upsert - based on loggedin email
 router.post('/poids',(req,res)=>{
+      //console.log("Preparing to update : ",req.body);
       mymongo.ngUpdate(req.body)
-          .then((r)=>{res.json(r);});
+          .then((r)=>{
+              //console.log("Successfully updated !");
+              res.json(r);
+              });
 });
 
 // Delete all collection

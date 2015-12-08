@@ -93,21 +93,24 @@ class MyMongo {
     }
   }
 
+
+
   /*----------------------------------------------------------------------------
-     Provides a sorted rray with all the documents from the collection.
+     Provides a sorted array with all the documents from the collection.
+     Limit results to the selected Mongo filter
   ----------------------------------------------------------------------------*/
-  ngFindAll(next) {
+  ngFindAllFilter(filter, next) {
     if(next) {
       this.ngCommand()
         .then((db)=>{
             db.collection(this.collection)
-              .find({},{_id:0})
+              .find(filter,{_id:0})
               .toArray((err,docs)=>{
                   if(!err){
                     db.close();
                     next(null,docs);
                   }else{
-                    console.log("Erreur in ngFindAll ",err);
+                    console.log("Erreur in ngFindAllFilter ",err);
                     db.close();
                     next(err,null);
                   }
@@ -118,11 +121,13 @@ class MyMongo {
     }else{
       var _this=this;
       return new Promise(function(resolve,reject){
-        return _this.ngFindAll((err,result)=>{if(err){reject(err);}else{resolve(result);}});
+        return _this.ngFindAllFilter(filter,(err,result)=>{if(err){reject(err);}else{resolve(result);}});
       });
     }
 
   }
+
+
   /*----------------------------------------------------------------------------
         Updates (or creates ) a document.
         Dates are normalized at 12:00:00 LOCAL TIME.
