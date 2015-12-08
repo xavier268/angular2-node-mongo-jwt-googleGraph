@@ -47,6 +47,12 @@ router.get('/poids',(req,res)=>{
 // Post a record to upsert - based on loggedin email
 router.post('/poids',(req,res)=>{
       //console.log("Preparing to update : ",req.body);
+
+      // Refuse to update if no loogedIn user ...
+      if(req.body.email != req.payload.email) {
+          console.log("Attempting to update a different user ?! <",req.body.email,"> is not <", req.payload.email),">";
+          res.status(401).json({"error":"Logged user differs from update user provided ?"});
+      }
       mymongo.ngUpdate(req.body)
           .then((r)=>{
               //console.log("Successfully updated !");

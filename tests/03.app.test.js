@@ -73,20 +73,37 @@ it("should fail with no header",function(done) {
             });
       });
 
-it("update a test record in test collection", function(done){
-  supertest(app)
-      .post("/api/poids")
-      .set("Authorization",jwt)
-      .set("Accept","application/json")
-      .send(testRecord)
-      .expect(200)
-      .end(function(err,res){
-        if(err) throw err;
-        //console.log("Success POST answer : ",res.text);
-        expect(res.body.ok).toBe(1);
-        done();
-            });
-      });
+  it("update a test record in test collection", function(done){
+    supertest(app)
+        .post("/api/poids")
+        .set("Authorization",jwt)
+        .set("Accept","application/json")
+        .send(testRecord)
+        .expect(200)
+        .end(function(err,res){
+          if(err) throw err;
+          //console.log("Success POST answer : ",res.text);
+          expect(res.body.ok).toBe(1);
+          done();
+              });
+        });
+
+    it("update should fail with different user than loggedIn user", function(done){
+      var testRecord2 = testRecord;
+      testRecord2.email = "changedEmail";
+      supertest(app)
+          .post("/api/poids")
+          .set("Authorization",jwt)
+          .set("Accept","application/json")
+          .send(testRecord2)
+          .expect(401)
+          .end(function(err,res){
+            if(err) throw err;
+            //console.log("Success POST answer : ",res.text);
+            expect(res.body.error).toBeTruthy();
+            done();
+                });
+          });
 
 
 it("get all records from db", function(done){

@@ -14,9 +14,4 @@ to enter/update the daily weight, and display various graphs and trends.
 
 ## Current status and TODOS
 
-API & server side
-* update should only be authorize to update loggedIn users
-* doc need to be improved
-* API fuller automatic testing needed
-
 Angular2 client needs to be writtent for the API
