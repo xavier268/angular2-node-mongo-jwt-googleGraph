@@ -50,7 +50,7 @@ router.post('/poids',(req,res)=>{
 
       // Refuse to update if no loogedIn user ...
       if(req.body.email != req.payload.email) {
-          console.log("Attempting to update a different user ?! <",req.body.email,"> is not <", req.payload.email),">";
+          console.log("Attempting to update a different user ?! <",req.body.email,"> is not <", req.payload.email,">");
           res.status(401).json({"error":"Logged user differs from update user provided ?"});
       }
       mymongo.ngUpdate(req.body)

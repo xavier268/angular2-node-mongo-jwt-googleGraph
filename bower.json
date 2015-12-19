@@ -17,10 +17,6 @@
     "tests"
   ],
   "dependencies": {
-    "angular2": "https://code.angularjs.org/2.0.0-alpha.46/angular2.dev.js",
-    "angular2h": "https://code.angularjs.org/2.0.0-alpha.46/http.dev.js",
-    "typescript": "https://code.angularjs.org/tools/typescript.js",
-    "bootstrap": "~3.3.6",
-    "system.js": "systemjs/systemjs#~0.19.6"
+    "bootstrap": "~3.3.6"
   }
 }

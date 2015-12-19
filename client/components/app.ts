@@ -1,4 +1,6 @@
-import {Component, bootstrap} from 'angular2/angular2';
+
+
+import {Component, bootstrap} from 'angular2/core';
 
 //==============================================================================
 // -- Main App
@@ -7,18 +9,11 @@ import {Component, bootstrap} from 'angular2/angular2';
     selector: 'app',
     template: `
       <div class="h1">Hello World !</div>
-      It is using bootstrap ...
       `
     })
 
-class AppComponent {
+export class AppComponent {
   constructor( ) {
     console.log("Constructing Main App");
   }
 }
-
-//==============================================================================
-// -- boostrap application
-//==============================================================================
-
-bootstrap(AppComponent);

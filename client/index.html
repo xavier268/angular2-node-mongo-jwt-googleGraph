@@ -1,35 +1,33 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Main App - Test Framework</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Angular2 and transpilers -->
-    <script src="/lib/system.js/dist/system.js"></script>
-    <script src="/lib/typescript/index.js"></script>
-    <script src="/lib/angular2/index.js"></script>
-    <script src="/lib/angular2h/index.js"></script>
-
-    <!-- Bootstrap & co. -->
-    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"></link>
-    <script src="/lib/jquery/dist/jquery.min.js"></script>
-    <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-
-    <!-- We are now preparing the browser to be able
-     to process PURE typescript files -->
-     <script>
+    <title>Angular 2 QuickStart</title>
+    <!-- 1. Load libraries -->
+    <script src="https://rawgithub.com/systemjs/systemjs/0.19.6/dist/system.js"></script>
+    <script src="https://code.angularjs.org/tools/typescript.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-beta.0/angular2-polyfills.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-beta.0/Rx.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-beta.0/angular2.dev.js"></script>
+    <!-- 2. Configure SystemJS -->
+    <script>
       System.config({
         transpiler: 'typescript',
-        typescriptOptions: { emitDecoratorMetadata: true }
+        typescriptOptions: { emitDecoratorMetadata: true },
+        packages: {'src': {defaultExtension: 'ts'}}
       });
-      System.import('./components/app.ts');
-      </script>
-
-</head>
+    </script>
+    <!-- 3. Bootstrap -->
+    <script>
+      System.import('angular2/platform/browser')
+        .then(function(ng){
+          System.import('components/app.ts').then(function(src) {
+                ng.bootstrap(src.AppComponent);
+                });
+            });
+    </script>
+  </head>
+  <!-- 4. Display the application -->
   <body>
-    <div class="container">
-      <app>loading... </app>
-    </div>
+    <app>Loading...</app>
   </body>
 </html>

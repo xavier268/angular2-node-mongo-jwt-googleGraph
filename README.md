@@ -12,6 +12,6 @@ A small proof-of-concept application using :
 Allow a multi-user, password control, access to a single-page application,
 to enter/update the daily weight, and display various graphs and trends.
 
-## Current status and TODOS
+## Current status and TODOSll
 
 Angular2 client needs to be writtent for the API
