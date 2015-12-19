@@ -17,6 +17,7 @@
     "mongodb": "^2.0.49"
   },
   "devDependencies": {
+    "angular2": "^2.0.0-beta.0",
     "bower": "^1.7.1",
     "mocha": "^2.3.4",
     "supertest": "^1.1.0"

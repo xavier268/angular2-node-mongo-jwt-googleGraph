@@ -1,19 +1,19 @@
 
+import {Component} from "angular2/core";
 
-import {Component, bootstrap} from 'angular2/core';
-
-//==============================================================================
+// ==============================================================================
 // -- Main App
-//==============================================================================
+// ==============================================================================
 @Component({
-    selector: 'app',
-    template: `
+  selector: "app",
+  template: `
       <div class="h1">Hello World !</div>
       `
-    })
+})
+
 
 export class AppComponent {
-  constructor( ) {
+  constructor() {
     console.log("Constructing Main App");
   }
 }
