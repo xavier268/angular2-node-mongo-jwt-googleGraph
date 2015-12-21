@@ -47,7 +47,9 @@ router.get('/poids',(req,res)=>{
 // Post a record to upsert - based on loggedin email
 router.post('/poids',(req,res)=>{
       //console.log("Preparing to update : ",req.body);
-
+      
+      // If email was not set and currently logged in, replace with logedIn email....
+      if(! req.body.email && req.payload.email) req.body.email = req.payload.email;
       // Refuse to update if no loogedIn user ...
       if(req.body.email != req.payload.email) {
           console.log("Attempting to update a different user ?! <",req.body.email,"> is not <", req.payload.email,">");

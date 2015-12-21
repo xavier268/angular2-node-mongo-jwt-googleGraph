@@ -1,6 +1,7 @@
 
 import {Component} from "angular2/core";
 import {RouteConfig, RouterLink, RouterOutlet, ROUTER_PROVIDERS } from "angular2/router";
+import {HTTP_PROVIDERS} from "angular2/http";
 
 import {ContentComponent} from "./content.component.ts";
 import {LoginComponent} from "./login.component.ts";
@@ -20,11 +21,11 @@ import {MyModel} from "./mymodel.service.ts";
       <router-outlet></router-outlet>
       `,
   directives : [ContentComponent, LoginComponent, RouterLink, RouterOutlet],
-  viewProviders: [ ROUTER_PROVIDERS, MyModel ]
+  viewProviders: [ ROUTER_PROVIDERS, HTTP_PROVIDERS, MyModel ]
 
 })
 @RouteConfig([
-  {path: "/login",        name: "Login",        component: LoginComponent   },
+  {path: "/login",        name: "Login",        component: LoginComponent,  useAsDefault: true },
   {path: "/content",      name: "Content",      component: ContentComponent }
 ])
 export class AppComponent {
