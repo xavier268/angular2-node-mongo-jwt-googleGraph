@@ -18,6 +18,6 @@ A small proof-of-concept application using :
 Allow a multi-user, password control, access to a single-page application,
 to enter/update the daily weight, and display various graphs and trends.
 
-## Current status and TODOSll
+## Current status and TODOS
 
 First version of angular2 client is functionnal, (but visually ugly !)
