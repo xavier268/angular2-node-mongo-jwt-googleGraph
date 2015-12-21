@@ -6,18 +6,20 @@
 import {Injectable} from "angular2/core";
 import {Http, Headers, RequestOptionsArgs} from "angular2/http";
 
-@Injectable()
+@Injectable() // Absolutely required, because MyModel is being injected Http
 export class MyModel {
-
-  constructor(private http: Http) {
-    console.log("Constructing MyModel Service");
-  }
 
   jwt: string = "";
   kg: number = 0;
   quand: Date = new Date();
   content: any[] = [];
 
+// Constructor inject Http object for async rest api access
+  constructor(private http: Http) {
+    console.log("Constructing MyModel Service");
+  }
+
+// Logout user
   logout() {
     console.log("Logging out ...");
     this.jwt = "";
