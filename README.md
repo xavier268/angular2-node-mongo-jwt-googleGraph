@@ -1,8 +1,8 @@
 # verdant-prune (Work in progress)
 
-A small proof-of-concept application using :
+A full-scale proof-of-concept application using :
 * Node v5.1 with ES6 (server) and TypeScript(client)
-* Angular2 client,
+* Angular2 client
 * RESTFull API with access control using jwt,
 * data storage with mongodb
 
@@ -18,6 +18,10 @@ A small proof-of-concept application using :
 Allow a multi-user, password control, access to a single-page application,
 to enter/update the daily weight, and display various graphs and trends.
 
-## Current status and TODOS
+## Current status
 
-First version of angular2 client is functionnal, (but visually ugly !)
+Client is working with Angular2-beta.0
+
+## TODOs and ideas ...
+
+Need to add a graph rendering within Angular2 (ideally from Google Graph ?!) ?
