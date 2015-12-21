@@ -6,10 +6,10 @@
   ],
   "compilerOptions": {},
   "files": [
-    "./client/boot.ts",
     "./client/components/app.component.ts",
     "./client/components/content.component.ts",
     "./client/components/login.component.ts",
+    "./client/components/mymodel.service.ts",
     "./node_modules/angular2/animate.d.ts",
     "./node_modules/angular2/animate/testing.d.ts",
     "./node_modules/angular2/bootstrap_static.d.ts",

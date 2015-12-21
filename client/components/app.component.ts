@@ -1,10 +1,10 @@
 
 import {Component} from "angular2/core";
-import {RouteConfig, RouterLink, RouterOutlet, ROUTER_PROVIDERS, Router } from "angular2/router";
+import {RouteConfig, RouterLink, RouterOutlet, ROUTER_PROVIDERS } from "angular2/router";
 
 import {ContentComponent} from "./content.component.ts";
 import {LoginComponent} from "./login.component.ts";
-
+import {MyModel} from "./mymodel.service.ts";
 
 // ==============================================================================
 // -- Main App
@@ -20,7 +20,7 @@ import {LoginComponent} from "./login.component.ts";
       <router-outlet></router-outlet>
       `,
   directives : [ContentComponent, LoginComponent, RouterLink, RouterOutlet],
-  viewProviders: [ ROUTER_PROVIDERS ]
+  viewProviders: [ ROUTER_PROVIDERS, MyModel ]
 
 })
 @RouteConfig([
@@ -31,4 +31,5 @@ export class AppComponent {
   constructor() {
     console.log("Constructing Main App");
   }
+
 }
