@@ -5,20 +5,7 @@ import {MyModel} from "./mymodel.service.ts";
 
 @Component({
     selector: "content",
-    template: `
-        <h2>Hello from content</h2>
-        <form>
-        Poids : <input [(ngModel)]="model.kg" />
-        Date : <input [(ngModel)]="model.quand" />
-
-          <button (click)="savePoids()" >Save</button>
-          <button (click)="getPoids()" >List</button>
-          <hr/>
-          <table>
-            <tr *ngFor="#c of model.content"><td>{{c.email}}</td><td>{{c.kg}}</td><td>{{c.quand}}</td></tr>
-          </table>
-        </form>
-    `,
+    templateUrl: "/components/content.template.html",
   directives: [CORE_DIRECTIVES]
 
 })

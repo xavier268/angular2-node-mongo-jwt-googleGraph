@@ -1,0 +1,20 @@
+<h2>Hello from content</h2>
+<form class="form-inline">
+  <label for="pd">Poids</label>
+  <input id="pd" class="form-control" [(ngModel)]="model.kg" />
+  <label for="dd">Date</label>
+  <input id="dd" class="form-control" [(ngModel)]="model.quand" />
+
+  <button class="btn btn-warning" (click)="savePoids()" [disabled]="!model.jwt">Save</button>
+  <!-- now auto refreshing ...
+<button class="btn btn-primary"(click)="getPoids()" >Refresh</button>
+-->
+</form>
+<br/><br/>
+<table class="table table-striped well">
+  <tr *ngFor="#c of model.content">
+    <td>{{c.email}}</td>
+    <td>{{c.kg}}</td>
+    <td>{{c.quand}}</td>
+  </tr>
+</table>

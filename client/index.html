@@ -3,6 +3,7 @@
   <head>
 
     <base href="/" /> <!-- required for routing -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Angular 2 QuickStart</title>
     <!-- 1. Load libraries -->
@@ -10,9 +11,12 @@
     <script src="https://code.angularjs.org/tools/typescript.js"></script>
     <script src="https://code.angularjs.org/2.0.0-beta.0/angular2-polyfills.js"></script>
     <script src="https://code.angularjs.org/2.0.0-beta.0/Rx.js"></script>
+
     <script src="https://code.angularjs.org/2.0.0-beta.0/angular2.min.js"></script>
     <script src="https://code.angularjs.org/2.0.0-beta.0/router.min.js"></script>
     <script src="https://code.angularjs.org/2.0.0-beta.0/http.min.js"></script>
+
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
 
     <!-- 2. Configure SystemJS -->
     <script>
@@ -31,9 +35,28 @@
                 });
             });
     </script>
+
+    <!-- 4. CSS with Bootstrap -->
+
+<link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+  integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+  crossorigin="anonymous">
+
+<!-- Optional theme
+<link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+  integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+  crossorigin="anonymous">
+-->
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+crossorigin="anonymous"></script>
   </head>
-  <!-- 4. Display the application -->
+  <!-- 5. Display the application -->
   <body>
-    <app>Loading...</app>
+    <app>    Loading ...    </app>
   </body>
 </html>

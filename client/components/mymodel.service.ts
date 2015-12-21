@@ -11,7 +11,7 @@ export class MyModel {
 
   jwt: string = "";
   kg: number = 0;
-  quand: Date = new Date();
+  quand: Date = null;
   content: any[] = [];
 
 // Constructor inject Http object for async rest api access

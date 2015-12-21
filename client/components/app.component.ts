@@ -13,13 +13,7 @@ import {MyModel} from "./mymodel.service.ts";
 
 @Component({
   selector: "app",
-  template: `
-      <div class="h1">Hello World from app</div>
-      <a [routerLink]="['Login']">Login</a>
-      <a [routerLink]="['Content']">Content</a>
-      <hr/>
-      <router-outlet></router-outlet>
-      `,
+  templateUrl: "/components/app.template.html",
   directives : [ContentComponent, LoginComponent, RouterLink, RouterOutlet],
   viewProviders: [ ROUTER_PROVIDERS, HTTP_PROVIDERS, MyModel ]
 
