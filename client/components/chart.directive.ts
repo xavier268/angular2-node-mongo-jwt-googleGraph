@@ -63,7 +63,7 @@ export class ChartDirective {
     data.addRows(rows);
     // Create options
     let options: any = {
-      "width": 600,
+      // "width": 600,
       "height": 300,
       "curveType": "function"
     };

@@ -6,14 +6,7 @@ import {ChartDirective} from "./chart.directive.ts";
 /* global google */
 @Component({
   selector: "chartPage",
-  template: `Chart component
-    <br/>
-    Not before (yyyy/mm/dd): <input #ip (blur)="setDate(ip.value)" value="2014/01/01"/> DEBUG : {{nbd}}
-    <br/>
-    To validate, just exit the input box : press Tab or click outside ...
-    <chart [content]="model.content" [title]="'User : ' + model.user" [notBefore]="nbd"></chart>
-    <hr/>
-     `,
+  templateUrl: "/components/chart.template.html",
   directives: [CORE_DIRECTIVES, ChartDirective]
 
 })
