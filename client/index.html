@@ -18,6 +18,13 @@
 
     <script src="/lib/jquery/dist/jquery.min.js"></script>
 
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+      </script>
+
+
     <!-- 2. Configure SystemJS -->
     <script>
       System.config({
@@ -56,6 +63,7 @@ integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7
 crossorigin="anonymous"></script>
   </head>
   <!-- 5. Display the application -->
+
   <body>
     <app>    Loading ...    </app>
   </body>

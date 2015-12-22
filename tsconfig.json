@@ -7,6 +7,7 @@
   "compilerOptions": {},
   "files": [
     "./client/components/app.component.ts",
+    "./client/components/chart.component.ts",
     "./client/components/content.component.ts",
     "./client/components/login.component.ts",
     "./client/components/mymodel.service.ts",

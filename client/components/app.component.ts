@@ -5,6 +5,7 @@ import {HTTP_PROVIDERS} from "angular2/http";
 
 import {ContentComponent} from "./content.component.ts";
 import {LoginComponent} from "./login.component.ts";
+import {ChartComponent} from "./chart.component.ts";
 import {MyModel} from "./mymodel.service.ts";
 
 // ==============================================================================
@@ -20,7 +21,8 @@ import {MyModel} from "./mymodel.service.ts";
 })
 @RouteConfig([
   {path: "/login",        name: "Login",        component: LoginComponent,  useAsDefault: true },
-  {path: "/content",      name: "Content",      component: ContentComponent }
+  {path: "/content",      name: "Content",      component: ContentComponent },
+  {path: "/chart",        name: "Chart",        component: ChartComponent }
 ])
 export class AppComponent {
   constructor() {
