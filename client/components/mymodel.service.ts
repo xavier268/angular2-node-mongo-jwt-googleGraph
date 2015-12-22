@@ -13,6 +13,7 @@ export class MyModel {
   kg: number = 0;
   quand: Date = null;
   content: any[] = [];
+  user: string= "";
 
 // Constructor inject Http object for async rest api access
   constructor(private http: Http) {
@@ -24,6 +25,7 @@ export class MyModel {
     console.log("Logging out ...");
     this.jwt = "";
     this.content = [];
+    this.user = "";
   }
 
 // Login and save the returned jason-web-token
@@ -41,7 +43,7 @@ export class MyModel {
           }
           console.log("Answer is : ", rep );
           this.jwt = rep.text();
-          if (this.jwt) {this.getPoids(callBack); }else {this.content = []; }
+          if (this.jwt) {this.getPoids(callBack); this.user = user; }else {this.content = []; this.jwt = ""; this.user = ""; }
           });
   }
 
@@ -68,7 +70,9 @@ export class MyModel {
 
   }
 
-  // Get list of poids records - callBack is called with no arguments on success.
+  // Get list of poids records
+  //     callBack is called with no arguments on success
+  //     private, beacause it should never be necessary to call it directly.
   private getPoids( callBack?: () => void ) {
     let options = {"headers": new Headers({"Authorization" : "Bearer " + this.jwt})};
     this.http.get("/api/poids", options)
