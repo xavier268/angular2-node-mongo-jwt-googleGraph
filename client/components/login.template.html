@@ -1,14 +1,14 @@
 <h2>Hello from login component</h2>
 <form class="form-inline well">
-  <div class="form-group" >
+  <div class="form-group">
     <label for="name">User</label>
     <input id="name" class="form-control" type="text" required [(ngModel)]="user" [disabled]="model.jwt">
     <label for="pw">Password</label>
     <input id="pw" class="form-control" type="text" [(ngModel)]="password" [disabled]="model.jwt">
   </div>
   <div class="form-group">
-    <button class="btn btn-primary" (click)="login()" [disabled]="model.jwt" >Log In</button>
-    <button class="btn btn-danger"  (click)="logout()" [disabled]="!model.jwt" >Log Out</button>
+    <button class="btn btn-primary" (click)="login()" [disabled]="model.jwt">Log In</button>
+    <button class="btn btn-danger" (click)="logout()" [disabled]="!model.jwt">Log Out</button>
   </div>
 </form>
 <!-- DEBUG jwt = {{model.jwt}} -->

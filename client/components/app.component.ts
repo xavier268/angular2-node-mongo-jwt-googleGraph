@@ -15,14 +15,14 @@ import {MyModel} from "./mymodel.service.ts";
 @Component({
   selector: "app",
   templateUrl: "/components/app.template.html",
-  directives : [ContentComponent, LoginComponent, RouterLink, RouterOutlet],
-  viewProviders: [ ROUTER_PROVIDERS, HTTP_PROVIDERS, MyModel ]
+  directives: [ContentComponent, LoginComponent, RouterLink, RouterOutlet],
+  viewProviders: [ROUTER_PROVIDERS, HTTP_PROVIDERS, MyModel]
 
 })
 @RouteConfig([
-  {path: "/login",        name: "Login",        component: LoginComponent,  useAsDefault: true },
-  {path: "/content",      name: "Content",      component: ContentComponent },
-  {path: "/chart",        name: "Chart",        component: ChartComponent }
+  { path: "/login", name: "Login", component: LoginComponent, useAsDefault: true },
+  { path: "/content", name: "Content", component: ContentComponent },
+  { path: "/chart", name: "Chart", component: ChartComponent }
 ])
 export class AppComponent {
   constructor() {

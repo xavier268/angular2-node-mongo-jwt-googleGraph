@@ -15,13 +15,13 @@ export class ChartDirective {
 
   el: HTMLElement;
   w: any;  // To store the window, without generating errors in typescript on window.google
-  private _content: any[]= [];
-  private _title: string= "";
+  private _content: any[] = [];
+  private _title: string = "";
   private _nbd: Date = new Date(0);
 
   // Setter for content will trigger drawing (or refreshing)
   @Input()
-  set content(c: any[] ) {
+  set content(c: any[]) {
     console.log("Setting content ...");
     this._content = c;
     this.draw();
@@ -37,10 +37,10 @@ export class ChartDirective {
   // Exclude records that are before that date
   //  (use for zooming ...)
   @Input()
-  set notBefore (d: Date) { this._nbd = d; this.draw(); }
-  get notBefore () { return this._nbd; }
+  set notBefore(d: Date) { this._nbd = d; this.draw(); }
+  get notBefore() { return this._nbd; }
 
-  constructor(elementRef: ElementRef ) {
+  constructor(elementRef: ElementRef) {
     console.log("Constructing chart directive");
     this.w = window;
     this.el = elementRef.nativeElement;
