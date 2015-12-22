@@ -30,3 +30,4 @@ Successfully integrated with Google jsapi visualization libs !
 ## TODOs, bugs and ideas ...
 
 * Direct access inner urls does not work ?
+* Implement a date picker or a slider to zoom on the chart ?
