@@ -56,6 +56,7 @@ el: HTMLElement ;
   ngOnInit() { // Implementing lifeCycle Hook, to initialize list ...
     console.log("Initializing list");
     this.model.getPoids();
+    this.test();
   }
 
 
