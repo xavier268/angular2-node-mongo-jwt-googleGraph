@@ -4,7 +4,7 @@ import {CORE_DIRECTIVES } from "angular2/common";
 import {MyModel} from "./mymodel.service.ts";
 /* global google */
 @Component({
-    selector: "chart",
+    selector: "chartPage",
     template: `Chart component
     <br/>
     <span (click)="test()">click to draw test chart</span>
@@ -56,7 +56,6 @@ el: HTMLElement ;
 
   ngOnInit() { // Implementing lifeCycle Hook, to initialize list ...
     console.log("Initializing list");
-    this.model.getPoids();
     this.test();
   }
 

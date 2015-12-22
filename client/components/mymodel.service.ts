@@ -27,7 +27,9 @@ export class MyModel {
   }
 
 // Login and save the returned jason-web-token
-  login(user: string, password: string) {
+//      callBack is called with no arguments on completion
+//      content property is updated automatically
+  login(user: string, password: string, callBack?: () => void ) {
     let body = JSON.stringify({"user": user, "password": password});
     let options = {"headers": new Headers({"Content-Type" : "application/json"})};
     this.jwt = ""; // erase first, so if error is thrown, user is logged out.
@@ -39,11 +41,14 @@ export class MyModel {
           }
           console.log("Answer is : ", rep );
           this.jwt = rep.text();
+          if (this.jwt) {this.getPoids(callBack); }else {this.content = []; }
           });
   }
 
-  // Save a new records, based on kg and quand.
-  savePoids() {
+  // Save a new records, based on kg and quand
+  //       callBack is called with no arguments on success.
+  //       content is updated automatically
+  savePoids(callBack?: () => void ) {
     let options = {"headers": new Headers({
           "Authorization" : "Bearer " + this.jwt,
           "Content-Type" : "application/json"
@@ -57,14 +62,14 @@ export class MyModel {
         }
         console.log("Answer is : ", rep);
         // And now, we refresh the list ...
-        this.getPoids();
+        this.getPoids(callBack);
       });
 
 
   }
 
-  // Get list of poids records
-  getPoids() {
+  // Get list of poids records - callBack is called with no arguments on success.
+  private getPoids( callBack?: () => void ) {
     let options = {"headers": new Headers({"Authorization" : "Bearer " + this.jwt})};
     this.http.get("/api/poids", options)
         .subscribe((rep, err) => {
@@ -74,6 +79,7 @@ export class MyModel {
           }
           console.log("Answer is : ", rep );
           this.content = rep.json();
+          if (callBack) callBack();
           });
   }
 
