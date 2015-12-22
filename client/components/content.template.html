@@ -1,14 +1,14 @@
 <h2>Hello from content component</h2>
 <form class="form-inline">
-  <label for="pd">Poids</label>
+  <label for="pd">Poids (required - not null) </label>
   <input id="pd" class="form-control" [(ngModel)]="model.kg" />
-  <label for="dd">Date</label>
+  <label for="dd">Date (optionnal - yyyy/mm/dd) </label>
   <input id="dd" class="form-control" [(ngModel)]="model.quand" />
 
   <button class="btn btn-warning" (click)="savePoids()" [disabled]="!model.jwt">Save</button>
-  
+
 </form>
-<br/><br/>
+<chart [content]="model.content" [title]="'User : ' + model.user"></chart>
 <table class="table table-striped well">
   <tr *ngFor="#c of model.content">
     <td>{{c.email}}</td>

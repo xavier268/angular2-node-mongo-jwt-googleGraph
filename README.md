@@ -8,6 +8,7 @@
 * time-bounded access control using jwt,
 * data storage with mongodb
 * unit testing and app level testing
+* integration with Google jsapi visualization
 
 ## What this application does
 
@@ -24,8 +25,8 @@ to enter/update the daily weight, and display various graphs and trends.
 ## Current status
 
 Working with Angular2-beta.0
+Successfully integrated with Google jsapi visualization libs !
 
 ## TODOs, bugs and ideas ...
 
 * Direct access inner urls does not work ?
-* Need to add a graph rendering within Angular2 (ideally from Google Graph ?!) ?

@@ -1,53 +1,68 @@
-import {Directive, OnInit, ElementRef} from "angular2/core";
+/**
+*      This directive will draw a chart from the array of records provided
+*
+*           Note : the relevant jsapi scripts should be already available
+*                  globally in the window.google object (see index.html)
+**/
+
+import {Directive, ElementRef, Input} from "angular2/core";
 import {CORE_DIRECTIVES } from "angular2/common";
 
-import {MyModel} from "./mymodel.service.ts";
-/* global google */
 @Directive({
-    selector: "chart"
+  selector: "chart",
 })
-export class ChartDirective implements OnInit {
+export class ChartDirective {
 
-data: any;
-options: any;
-el: HTMLElement ;
+  el: HTMLElement;
+  w: any;  // To store the window, without generating errors in typescript on window.google
+  private _content: any[]= [];
 
-  constructor(
-    elementRef: ElementRef,
-    private model: MyModel) {
-      console.log("Constructing chart component");
-      this.el = elementRef.nativeElement;
-      console.log("Native HTML :", this.el);
-      console.log("Google :", window.google);
+  // Setter for content will trigger drawing (or refreshing)
+  @Input()
+  set content(c: any[] ) {
+    console.log("Setting content ...");
+    this._content = c;
+    this.draw();
+  };
+
+  get content() {
+    return this._content;
+  }
+  // title will appear above graph if not null
+  @Input()
+  title: string = "";
+
+  constructor(elementRef: ElementRef ) {
+    console.log("Constructing chart directive");
+    this.w = window;
+    this.el = elementRef.nativeElement;
+    // console.log("Native HTML :", this.el);
+    if (!this.w.google) { console.error("Hey ! It seems the need google script was not loaded ?"); };
   }
 
   draw() {
-    console.log("Testing ...");
-        // Create the data table.
-        this.data = new window.google.visualization.DataTable();
-        this.data.addColumn("date", "Quand");
-        this.data.addColumn("number", "KG");
-        let rows = [];
-        for (let c in this.model.content) {
-          let d: Date = new Date(this.model.content[c].quand);
-          let k: number = +(this.model.content[c].kg); // Plus sign to force conversion sting -> number
-          rows.push([d, k]);
-        }
-        this.data.addRows(rows);
-        // Create options
-        this.options = {"title": "User : " + this.model.user,
-                       "width": 600,
-                       "height": 300,
-                       "curveType": "function" };
+    // Create the data table.
+    let data = new this.w.google.visualization.DataTable();
+    data.addColumn("date", "Quand");
+    data.addColumn("number", "KG");
+    let rows = [];
+    for (let c in this._content) {
+      let d: Date = new Date(this._content[c].quand);
+      let k: number = +(this._content[c].kg); // Plus sign to force conversion sting -> number
+      rows.push([d, k]);
+    }
+    data.addRows(rows);
+    // Create options
+    let options: any = {
+      "width": 600,
+      "height": 300,
+      "curveType": "function"
+    };
+    if (this.title) options.title = this.title;
 
-        // Instantiate and draw our chart, passing in some options.
-        (new window.google.visualization.LineChart(this.el))
-        .draw(this.data, this.options);
-  }
-
-  ngOnInit() { // Implementing lifeCycle Hook, to initialize list ...
-    console.log("Initializing list");
-    this.draw();
+    // Instantiate and draw our chart, passing in some options.
+    (new this.w.google.visualization.LineChart(this.el))
+      .draw(data, options);
   }
 
 
