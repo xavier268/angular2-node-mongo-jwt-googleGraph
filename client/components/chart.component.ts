@@ -2,7 +2,7 @@ import {Component, OnInit, ElementRef} from "angular2/core";
 import {CORE_DIRECTIVES } from "angular2/common";
 
 import {MyModel} from "./mymodel.service.ts";
-
+/* global google */
 @Component({
     selector: "chart",
     template: `Chart component
@@ -34,22 +34,23 @@ el: HTMLElement ;
     console.log("Testing ...");
         // Create the data table.
         this.data = new window.google.visualization.DataTable();
-        this.data.addColumn("string", "Topping");
-        this.data.addColumn("number", "Slices");
-        this.data.addRows([
-          ["Mushrooms", 3],
-          ["Onions", 1],
-          ["Olives", 1],
-          ["Zucchini", 1],
-          ["Pepperoni", 2]
-        ]);
+        this.data.addColumn("date", "Quand");
+        this.data.addColumn("number", "KG");
+        let rows = [];
+        for (let c in this.model.content) {
+          let d: Date = new Date(this.model.content[c].quand);
+          let k: number = +(this.model.content[c].kg); // Plus sign to force conversion sting -> number
+          rows.push([d, k]);
+        }
+        this.data.addRows(rows);
         // Create options
-        this.options = {"title": "How Much Pizza I Ate Last Night",
-                       "width": 400,
-                       "height": 300};
+        this.options = {"title": "Overview",
+                       "width": 600,
+                       "height": 300,
+                       "curveType": "function" };
 
         // Instantiate and draw our chart, passing in some options.
-        (new window.google.visualization.PieChart(this.el))
+        (new window.google.visualization.LineChart(this.el))
         .draw(this.data, this.options);
   }
 
