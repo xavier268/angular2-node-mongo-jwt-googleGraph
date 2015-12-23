@@ -1,4 +1,6 @@
-# Verdant-Prune : A full-fledged proof-of-concept
+# angular2-node-mongo-jwt-googleGraph 
+
+A full-fledged proof-of-concept application to test/demontsrate use of the various technologies.
 
 ## Application is demontrating
 
