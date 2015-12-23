@@ -17,6 +17,13 @@ A full-fledged proof-of-concept application to test/demonstrate use and integrat
 Allow a multi-user, password control, access to a single-page application,
 to enter/update the daily weight, and display various graphs and trends.
 
+## Install and test
+
+1. Make sure you have the latest mongo server installed locally
+2. Clone this repo
+3. Execute ./run.sh from the repo root
+4. Connect on localhost:8080 with a brower
+
 ## Editing comfort with Atom
 
 * Atom/linter-jshint setups for comfortable development,
