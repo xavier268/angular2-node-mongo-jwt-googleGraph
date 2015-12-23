@@ -2,7 +2,7 @@
 
 A full-fledged proof-of-concept application to test/demonstrate use and integration of the various technologies.
 
-## Application is demontrating
+## Application is demonstrating
 
 * Node v5.1 with ES6 (server) and TypeScript(client)
 * Angular2 client
