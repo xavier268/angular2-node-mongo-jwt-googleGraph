@@ -1,6 +1,6 @@
 # angular2-node-mongo-jwt-googleGraph 
 
-A full-fledged proof-of-concept application to test/demontsrate use of the various technologies.
+A full-fledged proof-of-concept application to test/demonstrate use and integration of the various technologies.
 
 ## Application is demontrating
 
