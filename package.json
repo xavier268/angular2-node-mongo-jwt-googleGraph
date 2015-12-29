@@ -1,8 +1,9 @@
 {
-  "name": "verdant-prune",
+  "name": "angular2-node-mongo-jwt-googlegraph-atom",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private":true,
   "scripts": {
     "test": "node_modules/.bin/mocha --no-exit tests",
     "start": "node server/server.js"
@@ -20,7 +21,7 @@
     "angular2": "^2.0.0-beta.0",
     "bower": "^1.7.1",
     "es6-promise": "^3.0.2",
-    "es6-shim": "^0.34.0",
+    "es6-shim": "^0.33.3",
     "kerberos": "0.0.17",
     "mocha": "^2.3.4",
     "reflect-metadata": "^0.1.2",
