@@ -1,4 +1,4 @@
-# angular2-node-mongo-jwt-googleGraph 
+# angular2-node-mongo-jwt-googleGraph
 
 A full-fledged proof-of-concept application to test/demonstrate use and integration of the various technologies.
 
@@ -21,6 +21,7 @@ to enter/update the daily weight, and display various graphs and trends.
 
 1. Make sure you have the latest mongo server installed locally
 2. Clone this repo
+3. Optionally, run the ./test/import.sh script to load test data
 3. Execute ./run.sh from the repo root
 4. Connect on localhost:8080 with a brower
 
