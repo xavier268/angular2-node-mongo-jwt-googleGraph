@@ -17,13 +17,15 @@ A full-fledged proof-of-concept application to test/demonstrate use and integrat
 Allow a multi-user, password control, access to a single-page application,
 to enter/update the daily weight, and display various graphs and trends.
 
+The logic is to store only one value per day - hence, dates are normalized, and upsert is used.
+
 ## Install and test
 
 1. Make sure you have the latest mongo server installed locally
 2. Clone this repo
 3. Optionally, run the ./test/import.sh script to load test data
-3. Execute ./run.sh from the repo root
-4. Connect on localhost:8080 with a brower
+4. Execute ./run.sh from the repo root
+5. Connect on localhost:8080 with a brower
 
 ## Editing comfort with Atom
 
@@ -39,5 +41,5 @@ Successfully integrated with Google jsapi visualization libs !
 
 ## TODOs, bugs and ideas ...
 
-* Direct access inner urls does not work ?
-* Implement a date picker or a slider to zoom on the chart ?
+* Direct access inner urls do not work ?
+* Better visual client feedback on server errors (unauthorized, etc ...)
