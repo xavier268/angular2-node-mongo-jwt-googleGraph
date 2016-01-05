@@ -5,6 +5,7 @@
     <a class="btn btn-primary navbar-btn" [routerLink]="['Content']">Chart & Content page</a>
     <a class="btn btn-primary navbar-btn" [routerLink]="['Chart']">Chart-only page</a>
   </nav>
+  <div class="h2 bg-danger">{{model.lasterror}}</div>
   <div>
     <router-outlet></router-outlet>
   </div>

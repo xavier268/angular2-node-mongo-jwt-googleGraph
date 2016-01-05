@@ -25,7 +25,7 @@ import {MyModel} from "./mymodel.service.ts";
   { path: "/chart", name: "Chart", component: ChartComponent }
 ])
 export class AppComponent {
-  constructor() {
+  constructor(private model: MyModel) {
     console.log("Constructing Main App");
   }
 

@@ -42,4 +42,4 @@ Successfully integrated with Google jsapi visualization libs !
 ## TODOs, bugs and ideas ...
 
 * Direct access inner urls do not work ?
-* Better visual client feedback on server errors (unauthorized, etc ...)
+* Improve error handling ?
