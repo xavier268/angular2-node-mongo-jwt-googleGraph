@@ -167,10 +167,10 @@ describe("Testing helper function",function(){
   it("testing normalize for date",function(){
     var nn = require ("../server/mongo/mymongo").normalizeDate;
       //console.log(nn().toUTCString());
-    expect(nn().getHours()).toBe(12);
-    expect(nn().getMinutes()).toBe(0);
-    expect(nn().getSeconds()).toBe(0);
-    expect(nn().getDate()).toBe((new Date()).getUTCDate());
+    expect(nn().getUTCHours()).toBe(12);
+    expect(nn().getUTCMinutes()).toBe(0);
+    expect(nn().getUTCSeconds()).toBe(0);
+    expect(nn().getUTCDate()).toBe((new Date()).getUTCDate());
 
     expect(nn("2010-05-01").getMinutes()).toBe(0);
     expect(nn("2010-5-1").getDate()).toBe(1);

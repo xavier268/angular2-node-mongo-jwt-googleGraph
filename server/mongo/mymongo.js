@@ -189,13 +189,14 @@ class MyMongo {
                   Normalize Dates
 
       Acceptes null, a Date or a string (representanting a LOCAL date)
-      Normalized to 12h0:00:00 LOCAL (to avoid unexpected day change)
+      Normalized to 12h0:00:00 UTC (to avoid unexpected day change)
       Will always return a non null Date object
 -------------------------------------------------------------------------------*/
 function  normalizeDate(date) {
   var r;
   if(!date) { r = new Date();} else {r=new Date(date);}
-  r.setHours(12,0,0,0);
+  r.setHours(12); // Avoid day shift ...
+  r.setUTCHours(12,0,0,0);
   //console.log("Date was normalized to :", r);
   return r;
 }
