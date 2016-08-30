@@ -2,7 +2,7 @@
 
 A full-fledged proof-of-concept application to test/demonstrate use and integration of the various technologies.
 
-**WORK IN PROGRESS** : porting to Angular2rc5 with server-side compilation ...
+**WORK IN PROGRESS** : porting to Angular2rc5 ...
 
 ## Application is demonstrating
 
