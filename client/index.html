@@ -1,76 +1,23 @@
-<!DOCTYPE html>
 <html>
-
-<head>
-
-  <base href="/" />
-  <!-- required for routing -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Angular 2 QuickStart</title>
-  <!-- 1. Load libraries -->
-  <script src="https://rawgithub.com/systemjs/systemjs/0.19.6/dist/system.js"></script>
-  <script src="https://code.angularjs.org/tools/typescript.js"></script>
-  <script src="https://code.angularjs.org/2.0.0-beta.0/angular2-polyfills.js"></script>
-  <script src="https://code.angularjs.org/2.0.0-beta.0/Rx.js"></script>
-
-  <script src="https://code.angularjs.org/2.0.0-beta.0/angular2.min.js"></script>
-  <script src="https://code.angularjs.org/2.0.0-beta.0/router.min.js"></script>
-  <script src="https://code.angularjs.org/2.0.0-beta.0/http.min.js"></script>
-
-  <script src="/lib/jquery/dist/jquery.min.js"></script>
-
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript">
-    // Load the Visualization API and the chart package.
-    google.load('visualization', '1.0', {
-      'packages': ['corechart']
-    });
-  </script>
-
-
-  <!-- 2. Configure SystemJS -->
-  <script>
-    System.config({
-      transpiler: 'typescript',
-      typescriptOptions: {
-        emitDecoratorMetadata: true
-      },
-      packages: {
-        'src': {
-          defaultExtension: 'ts'
-        }
-      }
-    });
-  </script>
-  <!-- 3. Bootstrap -->
-  <script type="application/ecmascript">
-    System.import('angular2/platform/browser')
-      .then(function(ng) {
-        System.import('components/app.component.ts').then(function(src) {
-          ng.bootstrap(src.AppComponent);
-        });
-      });
-  </script>
-
-  <!-- 4. CSS with Bootstrap -->
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-  <!-- Optional theme
-<link rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
-  integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
-  crossorigin="anonymous">
--->
-
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-</head>
-<!-- 5. Display the application -->
-
-<body>
-  <app> Loading ... </app>
-</body>
-
+  <head>
+    <title>Angular 2 QuickStart</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+    <!-- 1. Load libraries -->
+     <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <!-- 2. Configure SystemJS -->
+    <script src="systemjs.config.js"></script>
+    <script>
+      System.import('app').catch(function(err){ console.error(err); });
+    </script>
+  </head>
+  <!-- 3. Display the application -->
+  <body>
+    <my-app>Loading...</my-app>
+  </body>
 </html>

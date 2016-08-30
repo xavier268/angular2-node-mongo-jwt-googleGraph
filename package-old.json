@@ -1,0 +1,28 @@
+{
+  "name": "angular2-node-mongo-jwt-googlegraph-atom",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private":true,
+  "scripts": {
+    "test": "node_modules/.bin/mocha --no-exit tests",
+    "start": "node server/server.js"
+  },
+  "author": "xavier268",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "expect": "^1.20.2",
+    "express": "^4.14.0",
+    "jsonwebtoken": "^5.7.0",
+    "mongodb": "^2.2.5"
+  },
+  "devDependencies": {
+
+    "bower": "^1.7.9",
+    "kerberos": "0.0.17",
+    "mocha": "^2.5.3",
+    "supertest": "^1.2.0"
+  
+  }
+}
