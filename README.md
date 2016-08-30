@@ -2,6 +2,8 @@
 
 A full-fledged proof-of-concept application to test/demonstrate use and integration of the various technologies.
 
+**WORK IN PROGRESS** : porting to Angular2rc5 with server-side compilation ...
+
 ## Application is demonstrating
 
 * Node v6.3.1 with ES6 (server) and TypeScript(client)
