@@ -21,7 +21,6 @@ app.use('/jwt',aclrouter);
 
 // Register static route for client files
 app.use(express.static("client"));
-app.use("/dist",express.static("dist"));
 app.use("/lib",express.static("bower_components"));
 app.use("/node_modules",express.static("node_modules"));
 

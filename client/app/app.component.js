@@ -13,11 +13,11 @@ var core_1 = require("@angular/core");
 var AppComponent = (function () {
     function AppComponent() {
         // need something to generate js file ... ;-)
-        this.i = 1;
+        this.i = 3;
     }
     AppComponent = __decorate([
         core_1.Component({
-            selector: "my-app",
+            selector: "app",
             template: "<h1>My First Angular 2 App</h1>"
         }), 
         __metadata('design:paramtypes', [])
