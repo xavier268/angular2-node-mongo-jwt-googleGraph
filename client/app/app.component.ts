@@ -1,3 +1,4 @@
+/* Main componanet called by the application **/
 import { Component } from "@angular/core";
 @Component({
   selector: "my-app",

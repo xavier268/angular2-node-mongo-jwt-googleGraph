@@ -1,3 +1,4 @@
+/* This defines the app module, containing the application */
 import { NgModule }      from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 

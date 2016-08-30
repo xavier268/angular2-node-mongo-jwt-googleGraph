@@ -1,0 +1,2 @@
+In this directory, *.js and *.map.js are automatically compiled server side by
+the typescript compiler ... Do not try to modify them directly, but edit the *.ts files instead !
