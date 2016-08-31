@@ -11,15 +11,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /* This defines the app module, containing the application */
 var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
+var common_1 = require("@angular/common");
+var forms_1 = require("@angular/forms");
+var http_1 = require("@angular/http");
+var mymodel_service_1 = require("./mymodel.service");
 var app_component_1 = require("./app.component");
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule],
+            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, common_1.CommonModule],
             declarations: [app_component_1.AppComponent],
-            bootstrap: [app_component_1.AppComponent]
+            bootstrap: [app_component_1.AppComponent],
+            providers: [http_1.HTTP_PROVIDERS, mymodel_service_1.MyModel]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

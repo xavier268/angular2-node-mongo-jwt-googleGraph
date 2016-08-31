@@ -10,17 +10,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 /* Main componanet called by the application **/
 var core_1 = require("@angular/core");
+var mymodel_service_1 = require("./mymodel.service");
 var AppComponent = (function () {
-    function AppComponent() {
-        // need something to generate js file ... ;-)
-        this.i = 3;
+    function AppComponent(model) {
+        this.model = model;
+        console.log("Constructing Main App");
+        model.login("test", "passwd", function () {
+            console.log("WebToken :");
+            console.log(model.jwt);
+        });
     }
     AppComponent = __decorate([
         core_1.Component({
             selector: "app",
             template: "<h1>My First Angular 2 App</h1>"
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [mymodel_service_1.MyModel])
     ], AppComponent);
     return AppComponent;
 }());
