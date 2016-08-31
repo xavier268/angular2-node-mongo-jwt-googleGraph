@@ -4,7 +4,7 @@ A full-fledged proof-of-concept application to test/demonstrate use and integrat
 
 ## Application is demonstrating
 
-* Node v6.3.1 with ES6 (server) and TypeScript(client)
+* Node v6.5.0 with ES6 (server) and TypeScript(client)
 * Angular2 client
 * RESTFull API
 * time-bounded access control using jwt,
@@ -31,15 +31,12 @@ The logic is to store only one value per day - hence, dates are normalized, and 
 
 * Atom/linter-jshint setups for comfortable development,
 * Uses Atom-typescript and linter-tslint for typescript
-* Configuration disables compileOnSave for ts (since it is transpiled in the browser)
+* Uses  compile-On-Save for ts (no more inefficient transpiling in the browser)
 * npm install angular2 without the dependencies - used only for type checking
 
 ## Current status
 
-Working with Angular2-beta.0
+Working with Angular2-rc5
 Successfully integrated with Google jsapi visualization libs !
 
-## TODOs, bugs and ideas ...
 
-* Direct access inner urls do not work ?
-* Improve error handling ?
