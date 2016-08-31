@@ -5,8 +5,8 @@
 *                  globally in the window.google object (see index.html)
 **/
 
-import {Directive, ElementRef, Input} from "angular2/core";
-import {CORE_DIRECTIVES } from "angular2/common";
+import {Directive, ElementRef, Input} from "@angular/core";
+import {CORE_DIRECTIVES } from "@angular/common";
 
 @Directive({
   selector: "chart",

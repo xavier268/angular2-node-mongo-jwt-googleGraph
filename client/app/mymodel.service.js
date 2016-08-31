@@ -19,6 +19,7 @@ var http_1 = require("@angular/http");
 var MyModel = (function () {
     // Constructor inject Http object for async rest api access
     // Only ONE service instance is constructed for the entire application
+    // HTTP_PROVIDERS needs to be available (here, at module level)
     function MyModel(http) {
         this.http = http;
         this.jwt = ""; // authentication token

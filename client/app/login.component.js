@@ -1,3 +1,4 @@
+/* Login page */
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -8,21 +9,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-/* Main componanet called by the application **/
 var core_1 = require("@angular/core");
 var mymodel_service_1 = require("./mymodel.service");
-var AppComponent = (function () {
-    function AppComponent(model) {
+var LoginComponent = (function () {
+    function LoginComponent(model) {
         this.model = model;
-        console.log("Constructing Main App");
+        this.user = "test";
+        this.password = "passwd";
+        console.log("Constructing login component");
     }
-    AppComponent = __decorate([
+    // Login user, using provided password.
+    LoginComponent.prototype.login = function () {
+        console.log("Trying to log in " + this.user);
+        this.model.login(this.user, this.password);
+    };
+    // Logout user
+    LoginComponent.prototype.logout = function () {
+        this.model.logout();
+    };
+    LoginComponent = __decorate([
         core_1.Component({
-            selector: "app",
-            templateUrl: "app/app.template.html"
+            selector: "login",
+            templateUrl: "app/login.template.html"
         }), 
         __metadata('design:paramtypes', [mymodel_service_1.MyModel])
-    ], AppComponent);
-    return AppComponent;
+    ], LoginComponent);
+    return LoginComponent;
 }());
-exports.AppComponent = AppComponent;
+exports.LoginComponent = LoginComponent;

@@ -10,7 +10,9 @@ import {Http, Headers, RequestOptionsArgs} from "@angular/http";
 // Add the RxJS Observable operators we need in this app.
 // import "./rxjs-operators"; // NOT NEEDED ...
 
-@Injectable() // Absolutely required, because MyModel is being injected Http
+@Injectable() // Absolutely required here, because MyModel is being injected Http
+              // Note that the doc recommands to use @Injectable anyway, even
+              // when no subservice is being injected
 export class MyModel {
 
   jwt: string = "";     // authentication token
@@ -22,6 +24,7 @@ export class MyModel {
 
   // Constructor inject Http object for async rest api access
   // Only ONE service instance is constructed for the entire application
+  // HTTP_PROVIDERS needs to be available (here, at module level)
   constructor(private http: Http) {
     console.log("Constructing MyModel Service");
   }

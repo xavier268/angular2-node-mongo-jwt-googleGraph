@@ -8,21 +8,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-/* Main componanet called by the application **/
 var core_1 = require("@angular/core");
 var mymodel_service_1 = require("./mymodel.service");
-var AppComponent = (function () {
-    function AppComponent(model) {
+var ContentComponent = (function () {
+    function ContentComponent(model) {
         this.model = model;
-        console.log("Constructing Main App");
+        console.log("Constructing content component");
     }
-    AppComponent = __decorate([
+    ContentComponent.prototype.savePoids = function () {
+        this.model.savePoids();
+    };
+    ContentComponent = __decorate([
         core_1.Component({
-            selector: "app",
-            templateUrl: "app/app.template.html"
+            selector: "content",
+            templateUrl: "app/content.template.html"
         }), 
         __metadata('design:paramtypes', [mymodel_service_1.MyModel])
-    ], AppComponent);
-    return AppComponent;
+    ], ContentComponent);
+    return ContentComponent;
 }());
-exports.AppComponent = AppComponent;
+exports.ContentComponent = ContentComponent;

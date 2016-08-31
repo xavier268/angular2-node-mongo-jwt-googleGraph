@@ -1,17 +1,19 @@
-import {Component} from "angular2/core";
+/* Login page */
 
-import {MyModel} from "./mymodel.service.ts";
+import {Component} from "@angular/core";
+import {MyModel} from "./mymodel.service";
 
 
 
 @Component({
   selector: "login",
-  templateUrl: "/components/login.template.html"
+  templateUrl: "app/login.template.html"
 })
 export class LoginComponent {
 
   user: string = "test";
   password: string = "passwd";
+
   constructor(private model: MyModel) {
     console.log("Constructing login component");
   }

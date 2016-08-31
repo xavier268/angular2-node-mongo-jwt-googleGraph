@@ -1,13 +1,12 @@
-import {Component } from "angular2/core";
-import {CORE_DIRECTIVES } from "angular2/common";
+import {Component } from "@angular/core";
+import {CORE_DIRECTIVES } from "@angular/common";
 
-import {MyModel} from "./mymodel.service.ts";
-import {ChartDirective} from "./chart.directive.ts";
+import {MyModel} from "./mymodel.service";
+
 /* global google */
 @Component({
   selector: "chartPage",
-  templateUrl: "/components/chart.template.html",
-  directives: [CORE_DIRECTIVES, ChartDirective]
+  templateUrl: "app/chart.template.html"
 
 })
 export class ChartComponent {

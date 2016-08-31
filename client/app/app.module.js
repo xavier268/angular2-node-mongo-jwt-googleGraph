@@ -14,17 +14,22 @@ var platform_browser_1 = require("@angular/platform-browser");
 var common_1 = require("@angular/common");
 var forms_1 = require("@angular/forms");
 var http_1 = require("@angular/http");
+var app_routing_1 = require("./app.routing");
 var mymodel_service_1 = require("./mymodel.service");
+var chart_directive_1 = require("./chart.directive");
 var app_component_1 = require("./app.component");
+var login_component_1 = require("./login.component");
+var chart_component_1 = require("./chart.component");
+var content_component_1 = require("./content.component");
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, common_1.CommonModule],
-            declarations: [app_component_1.AppComponent],
+            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, common_1.CommonModule, app_routing_1.MY_ROUTER],
+            declarations: [app_component_1.AppComponent, login_component_1.LoginComponent, content_component_1.ContentComponent, chart_component_1.ChartComponent, chart_directive_1.ChartDirective],
             bootstrap: [app_component_1.AppComponent],
-            providers: [http_1.HTTP_PROVIDERS, mymodel_service_1.MyModel]
+            providers: [http_1.HTTP_PROVIDERS, mymodel_service_1.MyModel, app_routing_1.MY_ROUTING_PROVIDERS]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

@@ -8,21 +8,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-/* Main componanet called by the application **/
 var core_1 = require("@angular/core");
 var mymodel_service_1 = require("./mymodel.service");
-var AppComponent = (function () {
-    function AppComponent(model) {
+/* global google */
+var ChartComponent = (function () {
+    function ChartComponent(model) {
         this.model = model;
-        console.log("Constructing Main App");
+        this.nbd = new Date("2014/01/01");
+        console.log("Constructing chart component");
     }
-    AppComponent = __decorate([
+    ChartComponent.prototype.setDate = function (s) {
+        this.nbd = new Date(s);
+        console.log(s, " --> ", this.nbd);
+    };
+    ;
+    ChartComponent = __decorate([
         core_1.Component({
-            selector: "app",
-            templateUrl: "app/app.template.html"
+            selector: "chartPage",
+            templateUrl: "app/chart.template.html"
         }), 
         __metadata('design:paramtypes', [mymodel_service_1.MyModel])
-    ], AppComponent);
-    return AppComponent;
+    ], ChartComponent);
+    return ChartComponent;
 }());
-exports.AppComponent = AppComponent;
+exports.ChartComponent = ChartComponent;
