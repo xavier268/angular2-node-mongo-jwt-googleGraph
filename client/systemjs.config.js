@@ -2,9 +2,10 @@
 /* Declaring System as a readOnly global variable ... */
 /* globals System: false */
 
+
 /**
- * System configuration for Angular 2 samples
- * Adjust as necessary for your application needs.
+ * System configuration from Angular 2 sample file
+ * Adjusted for current application
  */
 (function(global) {
   // map tells the System loader where to look for things
@@ -50,4 +51,4 @@
     packages: packages
   };
   System.config(config);
-})(this);
+})();
