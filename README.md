@@ -5,7 +5,7 @@ A full-fledged proof-of-concept application to test/demonstrate use and integrat
 ## Application is demonstrating
 
 * Node v6.5.0 with ES6 (server) and TypeScript(client)
-* Angular2 client (Angular2rc5)
+* Angular2 client
 * RESTFull API
 * time-bounded access control using jwt,
 * data storage with mongodb
@@ -36,6 +36,5 @@ The logic is to store only one value per day - hence, dates are normalized, and 
 
 ## Current status
 
-Now ported to Angular2rc5 (required significant refactoring ! )
+Working with Angular2-rc5
 Successfully integrated with Google jsapi visualization libs !
-Implements JIT compilation in browser, using transpiled ts to js files in server.
