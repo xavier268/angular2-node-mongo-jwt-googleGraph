@@ -31,11 +31,11 @@ The logic is to store only one value per day - hence, dates are normalized, and 
 
 * Atom/linter-jshint setups for comfortable development,
 * Uses Atom-typescript and linter-tslint for typescript
-* Configuration disables compileOnSave for ts (since it is transpiled in the browser)
+* Uses  compile-On-Save for ts (no more inefficient transpiling in the browser)
 * npm install angular2 without the dependencies - used only for type checking
 
 ## Current status
 
-Now ported to Angular2rc5 (required significant refactoring !)
+Now ported to Angular2rc5 (required significant refactoring ! )
 Successfully integrated with Google jsapi visualization libs !
 Implements JIT compilation in browser, using transpiled ts to js files in server.
