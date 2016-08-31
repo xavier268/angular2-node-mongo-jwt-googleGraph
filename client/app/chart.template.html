@@ -1,0 +1,8 @@
+<h2>Chart component</h2>
+<form class="form-inline well">
+  <label for="ipt"> Not before</label>
+  <input type="date" id="ipt" #ip value="2014/01/01" class="form-control" />
+  <button class="btn btn-primary" (click)="setDate(ip.value)">Zoom</button>
+</form>
+<hr/>
+<chart [content]="model.content" [title]="'User : ' + model.user" [notBefore]="nbd"></chart>

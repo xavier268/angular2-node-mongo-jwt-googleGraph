@@ -1,28 +1,46 @@
 {
   "name": "angular2-node-mongo-jwt-googlegraph-atom",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
-  "main": "index.js",
-  "private":true,
   "scripts": {
     "test": "node_modules/.bin/mocha --no-exit tests",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "tsc":"node_modules/.bin/tsc"
   },
-  "author": "xavier268",
   "license": "ISC",
   "dependencies": {
+    "@angular/common": "2.0.0-rc.5",
+    "@angular/compiler": "2.0.0-rc.5",
+    "@angular/compiler-cli": "^0.5.0",
+    "@angular/core": "2.0.0-rc.5",
+    "@angular/forms": "0.3.0",
+    "@angular/http": "2.0.0-rc.5",
+    "@angular/platform-browser": "2.0.0-rc.5",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.5",
+    "@angular/platform-server": "2.0.0-rc.5",
+    "@angular/router": "3.0.0-rc.1",
+    "@angular/upgrade": "2.0.0-rc.5",
+    "angular2-in-memory-web-api": "0.0.17",
     "body-parser": "^1.15.2",
+    "bootstrap": "^3.3.6",
+    "core-js": "^2.4.0",
     "expect": "^1.20.2",
     "express": "^4.14.0",
     "jsonwebtoken": "^5.7.0",
-    "mongodb": "^2.2.5"
+    "mongodb": "^2.2.5",
+    "reflect-metadata": "^0.1.3",
+    "rxjs": "5.0.0-beta.6",
+    "systemjs": "0.19.27",
+    "zone.js": "^0.6.12"
   },
   "devDependencies": {
-
+    "concurrently": "^2.2.0",
+    "lite-server": "^2.2.2",
+    "typescript": "^1.9.0-dev",
+    "typings": "^1.3.2",
     "bower": "^1.7.9",
     "kerberos": "0.0.17",
     "mocha": "^2.5.3",
     "supertest": "^1.2.0"
-  
   }
 }
