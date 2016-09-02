@@ -38,3 +38,7 @@ The logic is to store only one value per day - hence, dates are normalized, and 
 
 Working with Angular2-rc5
 Successfully integrated with Google jsapi visualization libs !
+
+## See also
+
+The branch **angular2rc5restheart**, which is demonstrating a port of the current node backend to the restheart engine, while liliting the client changes to the strict minimum (the http service component).
