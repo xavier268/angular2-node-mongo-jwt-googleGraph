@@ -2,11 +2,10 @@
   "name": "angular2-node-mongo-jwt-googlegraph-atom",
   "version": "1.1.0",
   "description": "",
+  "author": "Xavier Gandillot<xavier@gandillot.com>",
   "scripts": {
-    "test": "node_modules/.bin/mocha --no-exit tests",
-    "start": "node server/server.js",
     "tsc":"node_modules/.bin/tsc",
-    "rest":"java -server -jar restheart-2.0.2/restheart.jar restheart-2.0.2/etc/restheart.yml"
+    "start":"java -server -jar restheart-2.0.2/restheart.jar restheart-2.0.2/etc/restheart.yml >server.log"
   },
   "license": "ISC",
   "dependencies": {

@@ -6,8 +6,8 @@
 
 import {Injectable} from "@angular/core";
 import {Http, Headers,
-  RequestOptions, RequestOptionsArgs,
-  ResponseContentType, URLSearchParams } from "@angular/http";
+RequestOptions, RequestOptionsArgs,
+ResponseContentType, URLSearchParams } from "@angular/http";
 
 // Add the RxJS Observable operators we need in this app.
 // import "./rxjs-operators"; // NOT NEEDED ...
@@ -19,7 +19,7 @@ export class MyModel {
 
   jwt: string = "";     // authentication token
   kg: number = 0;       // weight value being edited
-  quand: Date = null;   // date being edited
+  quand: Date = new Date();   // date being edited
   content: any[] = [];  // List of data in the db for the selected user
   user: string = "";    // user logged in
   lasterror = "";       // last error if any
@@ -68,44 +68,68 @@ export class MyModel {
   // Logout user
   logout() {
     console.log("Logging out ...");
-    this.http.delete("/_logic/roles/" + this.user);
+    let headers = new Headers({ "Authorization": this.jwt });
+    let options = new RequestOptions();
+    options.headers = headers;
+    this.http.delete("/_authtokens/" + this.user, options)
+      .subscribe(() => { console.log("Disconnected from server"); });
     this.jwt = "";
     this.content = [];
     this.user = "";
-    this.lasterror = "";
+    this.lasterror = "Logged out !";
   }
 
-  // Login and save the returned jason-web-token
-  //      optional callBack is called with no arguments on completion
-  //      content property is updated automatically
-  login_old(user: string, password: string, callBack?: () => void) {
-    let body = JSON.stringify({ "user": user, "password": password });
-    let options = { "headers": new Headers({ "Content-Type": "application/json" }) };
-    this.jwt = ""; // erase first, so if error is thrown, user is logged out.
-    this.http.post("/jwt", body, options)
+
+
+  // Save a new records, based on kg and quand
+  //       callBack is called with no arguments on success.
+  //       content is updated automatically
+  savePoids(callBack?: () => void) {
+    let headers = new Headers({ "Authorization": this.jwt });
+    headers.set("Content-Type", "application/json");
+
+    let options = new RequestOptions();
+    options.headers = headers;
+
+    // Normalize date for daily unicity ..
+    let normDate = new Date(this.quand);
+    normDate.setUTCHours(12);
+
+    let body = JSON.stringify({
+      "kg": this.kg,
+      "quand": { "$date": normDate.getTime() },
+      "email": this.user + "@test.com"
+    });
+    this.http.post("/api/sldb/poids", body, options)
       .subscribe(
       // Success handler
       (rep) => {
         console.log("Answer is : ", rep);
-        this.jwt = rep.text();
-        if (this.jwt) {
-          this.getPoids(callBack);
-          this.user = user;
-        } else {
-          this.content = [];
-          this.jwt = "";
-          this.user = "";
-          this.lasterror = "Login refused !";
-        }
+        console.log("Successful write");
+        // And now, we refresh the list ...
+        this.getPoids(callBack);
       },
-      // Error handler
+      // error handler
       (err) => {
-        console.log("There was an error during login ?");
-        console.log(err);
-      },
-      // on complete handler
-      () => {
-        console.log("Completed login");
+        console.log("Failed write - assuming already existing document with same email/date");
+        console.log("We are now trying to PATCH the existing record");
+        let params = new URLSearchParams();
+        params.set(
+          "filter",
+          JSON.stringify({
+            "quand": { "$date": normDate.getTime() },
+            "email": this.user + "@test.com"
+          }));
+        options.search = params;
+        let body = JSON.stringify({
+          "kg": this.kg
+        });
+        this.http.patch("/api/sldb/poids/*", body, options)
+          .subscribe((rep) => {
+          console.log("Success write on second attempt !");
+          // And now, we refresh the list ...
+          this.getPoids(callBack);
+        });
       }
       );
   }
@@ -113,7 +137,7 @@ export class MyModel {
   // Save a new records, based on kg and quand
   //       callBack is called with no arguments on success.
   //       content is updated automatically
-  savePoids(callBack?: () => void) {
+  savePoids_old(callBack?: () => void) {
     let options = {
       "headers": new Headers({
         "Authorization": "Bearer " + this.jwt,
@@ -138,8 +162,9 @@ export class MyModel {
   private getPoids(callBack?: () => void) {
     // It does not work to just "manually" add the params to the url !!
     let params = new URLSearchParams();
-    params.set("sort_by", "quand");
-    params.set("pagesize", "10");
+    params.set("sort_by", "-quand");
+    params.set("pagesize", "1000");
+    params.set("filter", JSON.stringify({"email": this.user + "@test.com"}));
 
     let headers = new Headers({ "Authorization": this.jwt });
 
@@ -148,33 +173,15 @@ export class MyModel {
     options.headers = headers;
 
     this.http.get("/api/sldb/poids", options)
-    // this.http.get("/api/sldb/poids", options)
       .subscribe((rep) => {
       console.log("Answer is : ", rep);
       if (rep.status !== 200) { this.lasterror = rep.statusText; } else { this.lasterror = ""; };
       this.content = rep.json()._embedded["rh:doc"];
-      console.log("JSon rep = ", this.content);
-      console.log("JSon rep date # 2 = ", this.content[2].quand.$date) ;
+      // We need to adapt the date format from BSON to js,
+      // in order not to break compatibility with client
       for (let i = 0; i < this.content.length; i++) {
-  //      this.content[i].quand = (new Date(this.content[i].quand.$date)).toISOString();
         this.content[i].quand = (new Date(this.content[i].quand.$date));
-    }
-       if (callBack) callBack();
-    });
-  }
-
-
-
-  // Get list of poids records
-  //     callBack is called with no arguments on success
-  //     private, beacause it should never be necessary to call it directly.
-  private getPoids_old(callBack?: () => void) {
-    let options = { "headers": new Headers({ "Authorization": "Bearer " + this.jwt }) };
-    this.http.get("/api/poids", options)
-      .subscribe((rep) => {
-      console.log("Answer is : ", rep);
-      if (rep.status !== 200) { this.lasterror = rep.statusText; } else { this.lasterror = ""; };
-      this.content = rep.json();
+      }
       if (callBack) callBack();
     });
   }

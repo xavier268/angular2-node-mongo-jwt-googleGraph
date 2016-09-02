@@ -1,10 +1,21 @@
-# angular2-node-mongo-jwt-googleGraph
+# angular2-restheart-mongo-jwt-googleGraph
 
 A full-fledged proof-of-concept application to test/demonstrate use and integration of the various technologies.
+This git branch demonstrates porting the node backend to a java-based (undertow) REST api, named RestHeart.
+
+## This branch is a port of the original node server to the RestHeart engine
+
+* The goal was to check the feasibility of porting the existing node backend to the restHeart engine (mongo restful api engine).
+* It was achieved by only modifying the "model.service.ts" from the client, the rest of the client application was left unchanged.
+* The database structure as well was unchanged.
+
+Technically, the port is not 100% functionally identical to the original node implemention, since I had to adapt to the new output format (hal) from restHeart. The security architecture is different, relying on Restheart authentication tokens instead of the node jwt tokens, but the general structure was kept. The most significant effort was required from the date and time  management, that are now returned as BSON dates by Restheart.
+
+Also, at this stage date normalization now happens in the client (however, the database protects the integrity with the index on date/email). This could be improved by configuring a request processor inside RestHeart that normalizes dates at the server side. Such processor could probably also deliver dates in the responses as date strings, instead of BSON, which would be probably faster than the local processing in the client.
 
 ## Application is demonstrating
 
-* Node v6.5.0 with ES6 (server) and TypeScript(client)
+* RestHeart API engine (server) and TypeScript(client)
 * Angular2 client
 * RESTFull API
 * time-bounded access control using jwt,
@@ -36,9 +47,5 @@ The logic is to store only one value per day - hence, dates are normalized, and 
 
 ## Current status
 
-Working with Angular2-rc5
-Successfully integrated with Google jsapi visualization libs !
-
-## ToDos
-
-* try producing an "Ahead-Of-Time" compiled and optimized version (current ngc tool version seems buggy ?)
+* Working with Angular2-rc5 (client) nd restheart-2.0.2 (server)
+* Successfully integrated with Google jsapi visualization libs !

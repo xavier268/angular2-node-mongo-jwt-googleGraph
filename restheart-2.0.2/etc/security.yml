@@ -37,21 +37,32 @@ permissions:
     - role: admins
       predicate: path-prefix[path="/"]
 
+# users with role users can GET or POST to sldb/poids
+    - role: users
+      predicate: path-prefix[path="/sldb/poids"] and method[value="GET"]
+
+    - role: users
+      predicate: path-prefix[path="/sldb/poids"] and method[value="POST"]
+
+    - role: users
+      predicate: path-prefix[path="/sldb/poids"] and method[value="PATCH"]
+
+
 # Not authenticated user can only GET any resource under the /publicdb URI
     - role: $unauthenticated
       predicate: path-prefix[path="/publicdb/"] and method[value="GET"]
 
 # Users with role 'users' can GET any collection or document resource (excluding dbs)
-    - role: users
-      predicate: regex[pattern="/.*/.*", value="%R", full-match=true] and method[value="GET"]
+    # - role: users
+    #   predicate: regex[pattern="/.*/.*", value="%R", full-match=true] and method[value="GET"]
 
 # Users with role 'users' can do anything on the collection /publicdb/{username}
-    - role: users
-      predicate: path-template[value="/publicdb/{username}"] and equals[%u, "${username}"]
+    # - role: users
+    #   predicate: path-template[value="/publicdb/{username}"] and equals[%u, "${username}"]
 
 # Users with role 'users' can do anything on documents of the collection /publicdb/{username}
-    - role: users
-      predicate: path-template[value="/publicdb/{username}/{doc}"] and equals[%u, "${username}"]
+    # - role: users
+    #   predicate: path-template[value="/publicdb/{username}/{doc}"] and equals[%u, "${username}"]
 
 # Same than previous one, but using regex predicate
 # Users with role 'users' can do anything on documents of the collection /publicdb/{username}

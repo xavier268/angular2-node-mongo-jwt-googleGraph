@@ -24,7 +24,7 @@ var MyModel = (function () {
         this.http = http;
         this.jwt = ""; // authentication token
         this.kg = 0; // weight value being edited
-        this.quand = null; // date being edited
+        this.quand = new Date(); // date being edited
         this.content = []; // List of data in the db for the selected user
         this.user = ""; // user logged in
         this.lasterror = ""; // last error if any
@@ -66,51 +66,67 @@ var MyModel = (function () {
     // Logout user
     MyModel.prototype.logout = function () {
         console.log("Logging out ...");
-        this.http.delete("/_logic/roles/" + this.user);
+        var headers = new http_1.Headers({ "Authorization": this.jwt });
+        var options = new http_1.RequestOptions();
+        options.headers = headers;
+        this.http.delete("/_authtokens/" + this.user, options)
+            .subscribe(function () { console.log("Disconnected from server"); });
         this.jwt = "";
         this.content = [];
         this.user = "";
-        this.lasterror = "";
-    };
-    // Login and save the returned jason-web-token
-    //      optional callBack is called with no arguments on completion
-    //      content property is updated automatically
-    MyModel.prototype.login_old = function (user, password, callBack) {
-        var _this = this;
-        var body = JSON.stringify({ "user": user, "password": password });
-        var options = { "headers": new http_1.Headers({ "Content-Type": "application/json" }) };
-        this.jwt = ""; // erase first, so if error is thrown, user is logged out.
-        this.http.post("/jwt", body, options)
-            .subscribe(
-        // Success handler
-        function (rep) {
-            console.log("Answer is : ", rep);
-            _this.jwt = rep.text();
-            if (_this.jwt) {
-                _this.getPoids(callBack);
-                _this.user = user;
-            }
-            else {
-                _this.content = [];
-                _this.jwt = "";
-                _this.user = "";
-                _this.lasterror = "Login refused !";
-            }
-        }, 
-        // Error handler
-        function (err) {
-            console.log("There was an error during login ?");
-            console.log(err);
-        }, 
-        // on complete handler
-        function () {
-            console.log("Completed login");
-        });
+        this.lasterror = "Logged out !";
     };
     // Save a new records, based on kg and quand
     //       callBack is called with no arguments on success.
     //       content is updated automatically
     MyModel.prototype.savePoids = function (callBack) {
+        var _this = this;
+        var headers = new http_1.Headers({ "Authorization": this.jwt });
+        headers.set("Content-Type", "application/json");
+        var options = new http_1.RequestOptions();
+        options.headers = headers;
+        // Normalize date for daily unicity ..
+        var normDate = new Date(this.quand);
+        normDate.setUTCHours(12);
+        var body = JSON.stringify({
+            "kg": this.kg,
+            "quand": { "$date": normDate.getTime() },
+            "email": this.user + "@test.com"
+        });
+        this.http.post("/api/sldb/poids", body, options)
+            .subscribe(
+        // Success handler
+        function (rep) {
+            console.log("Answer is : ", rep);
+            console.log("Successful write");
+            // And now, we refresh the list ...
+            _this.getPoids(callBack);
+        }, 
+        // error handler
+        function (err) {
+            console.log("Failed write - assuming already existing document with same email/date");
+            console.log("We are now trying to PATCH the existing record");
+            var params = new http_1.URLSearchParams();
+            params.set("filter", JSON.stringify({
+                "quand": { "$date": normDate.getTime() },
+                "email": _this.user + "@test.com"
+            }));
+            options.search = params;
+            var body = JSON.stringify({
+                "kg": _this.kg
+            });
+            _this.http.patch("/api/sldb/poids/*", body, options)
+                .subscribe(function (rep) {
+                console.log("Success write on second attempt !");
+                // And now, we refresh the list ...
+                _this.getPoids(callBack);
+            });
+        });
+    };
+    // Save a new records, based on kg and quand
+    //       callBack is called with no arguments on success.
+    //       content is updated automatically
+    MyModel.prototype.savePoids_old = function (callBack) {
         var _this = this;
         var options = {
             "headers": new http_1.Headers({
@@ -133,8 +149,9 @@ var MyModel = (function () {
         var _this = this;
         // It does not work to just "manually" add the params to the url !!
         var params = new http_1.URLSearchParams();
-        params.set("sort_by", "quand");
-        params.set("pagesize", "10");
+        params.set("sort_by", "-quand");
+        params.set("pagesize", "1000");
+        params.set("filter", JSON.stringify({ "email": this.user + "@test.com" }));
         var headers = new http_1.Headers({ "Authorization": this.jwt });
         var options = new http_1.RequestOptions();
         options.search = params;
@@ -150,33 +167,11 @@ var MyModel = (function () {
             }
             ;
             _this.content = rep.json()._embedded["rh:doc"];
-            console.log("JSon rep = ", _this.content);
-            console.log("JSon rep date # 2 = ", _this.content[2].quand.$date);
+            // We need to adapt the date format from BSON to js,
+            // in order not to break compatibility with client
             for (var i = 0; i < _this.content.length; i++) {
-                //      this.content[i].quand = (new Date(this.content[i].quand.$date)).toISOString();
                 _this.content[i].quand = (new Date(_this.content[i].quand.$date));
             }
-            if (callBack)
-                callBack();
-        });
-    };
-    // Get list of poids records
-    //     callBack is called with no arguments on success
-    //     private, beacause it should never be necessary to call it directly.
-    MyModel.prototype.getPoids_old = function (callBack) {
-        var _this = this;
-        var options = { "headers": new http_1.Headers({ "Authorization": "Bearer " + this.jwt }) };
-        this.http.get("/api/poids", options)
-            .subscribe(function (rep) {
-            console.log("Answer is : ", rep);
-            if (rep.status !== 200) {
-                _this.lasterror = rep.statusText;
-            }
-            else {
-                _this.lasterror = "";
-            }
-            ;
-            _this.content = rep.json();
             if (callBack)
                 callBack();
         });
