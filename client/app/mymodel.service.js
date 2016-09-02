@@ -30,9 +30,43 @@ var MyModel = (function () {
         this.lasterror = ""; // last error if any
         console.log("Constructing MyModel Service");
     }
+    // Login and save the returned jason-web-token
+    //      optional callBack is called with no arguments on completion
+    //      content property is updated automatically
+    MyModel.prototype.login = function (user, password, callBack) {
+        var _this = this;
+        this.jwt = ""; // erase first, so if error is thrown, user is logged out.
+        var options = new http_1.RequestOptions({
+            "headers": new http_1.Headers({ "Authorization": "Basic " + btoa(user + ":" + password) }),
+            "withCredentials": true,
+            "responseType": http_1.ResponseContentType.Json
+        });
+        this.http
+            .get("/_logic/roles/" + user, options)
+            .subscribe(
+        // success
+        function (rep) {
+            console.log(rep);
+            if (rep.status !== 200) {
+                console.log("Unexpected http status !? - aborting ...");
+                _this.logout();
+                return;
+            }
+            console.log("Success login for: " + user);
+            _this.user = user;
+            _this.jwt = "Basic " + btoa(user + ":" + rep.headers.get("Auth-Token"));
+            _this.getPoids(callBack);
+        }, 
+        // Error handler
+        function (err) {
+            console.log("There was an error during login ?");
+            console.log(err);
+        });
+    };
     // Logout user
     MyModel.prototype.logout = function () {
         console.log("Logging out ...");
+        this.http.delete("/_logic/roles/" + this.user);
         this.jwt = "";
         this.content = [];
         this.user = "";
@@ -41,7 +75,7 @@ var MyModel = (function () {
     // Login and save the returned jason-web-token
     //      optional callBack is called with no arguments on completion
     //      content property is updated automatically
-    MyModel.prototype.login = function (user, password, callBack) {
+    MyModel.prototype.login_old = function (user, password, callBack) {
         var _this = this;
         var body = JSON.stringify({ "user": user, "password": password });
         var options = { "headers": new http_1.Headers({ "Content-Type": "application/json" }) };
@@ -96,6 +130,40 @@ var MyModel = (function () {
     //     callBack is called with no arguments on success
     //     private, beacause it should never be necessary to call it directly.
     MyModel.prototype.getPoids = function (callBack) {
+        var _this = this;
+        // It does not work to just "manually" add the params to the url !!
+        var params = new http_1.URLSearchParams();
+        params.set("sort_by", "quand");
+        params.set("pagesize", "10");
+        var headers = new http_1.Headers({ "Authorization": this.jwt });
+        var options = new http_1.RequestOptions();
+        options.search = params;
+        options.headers = headers;
+        this.http.get("/api/sldb/poids", options)
+            .subscribe(function (rep) {
+            console.log("Answer is : ", rep);
+            if (rep.status !== 200) {
+                _this.lasterror = rep.statusText;
+            }
+            else {
+                _this.lasterror = "";
+            }
+            ;
+            _this.content = rep.json()._embedded["rh:doc"];
+            console.log("JSon rep = ", _this.content);
+            console.log("JSon rep date # 2 = ", _this.content[2].quand.$date);
+            for (var i = 0; i < _this.content.length; i++) {
+                //      this.content[i].quand = (new Date(this.content[i].quand.$date)).toISOString();
+                _this.content[i].quand = (new Date(_this.content[i].quand.$date));
+            }
+            if (callBack)
+                callBack();
+        });
+    };
+    // Get list of poids records
+    //     callBack is called with no arguments on success
+    //     private, beacause it should never be necessary to call it directly.
+    MyModel.prototype.getPoids_old = function (callBack) {
         var _this = this;
         var options = { "headers": new http_1.Headers({ "Authorization": "Bearer " + this.jwt }) };
         this.http.get("/api/poids", options)

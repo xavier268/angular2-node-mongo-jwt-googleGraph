@@ -6,7 +6,7 @@
     "test": "node_modules/.bin/mocha --no-exit tests",
     "start": "node server/server.js",
     "tsc":"node_modules/.bin/tsc",
-    "start-rest":"java -server -jar restheart-2.0.2/restheart.jar restheart-2.0.2/etc/restheart.yml"
+    "rest":"java -server -jar restheart-2.0.2/restheart.jar restheart-2.0.2/etc/restheart.yml"
   },
   "license": "ISC",
   "dependencies": {
